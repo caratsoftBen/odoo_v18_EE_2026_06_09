@@ -1,0 +1,82 @@
+# =============================================================================
+# Katzer Bundle — Standard Apps
+# =============================================================================
+# Format:   technical_name    # Human-readable description
+# Disable:  prefix line with #
+# Each line = one app. No commas needed — the installer joins them.
+# Technical names are mandatory (Odoo requires them for --init).
+# =============================================================================
+
+
+# --- Localisation (always install first — others depend on it) ---------------
+
+l10n_de                        # German chart of accounts (SKR03 / SKR04)
+
+
+# --- Accounting --------------------------------------------------------------
+
+account                        # Core accounting (journal entries, invoices)
+account_accountant             # EE: Full accounting UI (reconciliation, lock dates)
+account_reports                # EE: Financial reports (P&L, Balance Sheet, Tax report)
+account_followup               # EE: Customer payment follow-up automation
+account_bank_statement_import  # Bank statement import (CSV, OFX, CAMT)
+
+
+# --- Sales -------------------------------------------------------------------
+
+sale_management                # Sales orders and quotations
+sale_subscription
+crm                            # CRM pipeline and opportunities
+
+
+# --- Purchase ----------------------------------------------------------------
+
+purchase                       # Purchase orders and vendor bills
+
+
+# --- Inventory ---------------------------------------------------------------
+
+stock                          # Inventory management and warehousing
+
+
+# --- Project & Timesheets ----------------------------------------------------
+
+project                        # Project and task management
+hr_timesheet                   # Timesheet entries linked to projects
+timesheet_grid                 # EE: Weekly timesheet grid view
+
+
+# --- Field Service -----------------------------------------------------------
+
+industry_fsm                   # EE: Field Service (location-based tasks, mobile app)
+
+
+# --- Human Resources ---------------------------------------------------------
+
+hr                             # Employee master records
+hr_holidays                    # Leave allocation and requests
+hr_expense                     # Employee expense reports
+hr_recruitment                 # Job positions and recruitment pipeline
+
+
+# --- Payroll (uncomment when needed) -----------------------------------------
+
+# hr_payroll                   # EE: Payroll processing
+# l10n_de_hr_payroll           # EE: German payroll (Lohnsteuer, DATEV export)
+
+
+# --- Documents & Signing -----------------------------------------------------
+
+documents                      # EE: Document management and workspace
+sign                           # EE: Electronic document signing
+
+
+# --- Reporting & Dashboards --------------------------------------------------
+
+spreadsheet_dashboard          # EE: Configurable dashboards with spreadsheets
+
+
+# --- Website / eCommerce (uncomment when needed) -----------------------------
+
+# website                      # CMS website builder
+# website_sale                 # EE: eCommerce shop

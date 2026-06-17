@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The UHG footer (logos + 3 columns) is taller than the default footer
+         area, so enlarge the bottom margin to keep it off the document body. -->
+    <record id="base.paperformat_euro" model="report.paperformat">
+        <field name="margin_bottom">32</field>
+    </record>
+</odoo>
