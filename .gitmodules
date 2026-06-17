@@ -1,0 +1,4 @@
+[submodule "addons_ee"]
+	path = addons_ee
+	url = https://github.com/odoo/enterprise.git
+	branch = 18.0
