@@ -1,12 +1,12 @@
-# Katzer Bundle — Install standard apps into the configured Odoo database
-# Run from workspace root: .\tools\katzer_bundle_of_standard_apps\install_katzer_bundle.ps1
+# Igm Bundle — Install standard apps into the configured Odoo database
+# Run from workspace root: .\igm_tools\igm_bundle_of_standard_apps\install_igm_bundle.ps1
 # No venv activation needed — script uses the venv Python directly.
 
 $WorkspaceRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 $Python        = Join-Path $WorkspaceRoot ".venv\Scripts\python.exe"
 $OdooBin       = Join-Path $WorkspaceRoot "odoo-bin"
 $Conf          = Join-Path $WorkspaceRoot "odoo_local.conf"
-$ModuleFile    = Join-Path $PSScriptRoot  "katzer_bundle_modules.txt"
+$ModuleFile    = Join-Path $PSScriptRoot  "igm_bundle_modules.txt"
 
 # Parse module list: skip comment lines (#) and blank lines, take first word of each line
 $Modules = Get-Content $ModuleFile |
@@ -18,7 +18,7 @@ $ModuleArg = $Modules -join ","
 
 $DbLine = Select-String 'db_name\s*=' $Conf | Select-Object -First 1
 Write-Host ""
-Write-Host "Katzer Bundle Installer" -ForegroundColor Cyan
+Write-Host "Igm Bundle Installer" -ForegroundColor Cyan
 Write-Host "-----------------------" -ForegroundColor Cyan
 Write-Host "Workspace : $WorkspaceRoot"
 Write-Host "Config    : $Conf"
@@ -32,7 +32,7 @@ Write-Host ""
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
-    Write-Host "Katzer Bundle installed successfully." -ForegroundColor Green
+    Write-Host "Igm Bundle installed successfully." -ForegroundColor Green
 } else {
     Write-Host ""
     Write-Host "Install finished with errors (exit code $LASTEXITCODE)." -ForegroundColor Red

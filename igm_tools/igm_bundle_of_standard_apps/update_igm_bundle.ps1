@@ -1,12 +1,12 @@
-# update_katzer_bundle.ps1 - Install only modules from katzer_bundle_modules.txt not yet in the database
-# Run from workspace root: .\tools\katzer_bundle_of_standard_apps\update_katzer_bundle.ps1
+# update_igm_bundle.ps1 - Install only modules from igm_bundle_modules.txt not yet in the database
+# Run from workspace root: .\igm_tools\igm_bundle_of_standard_apps\update_igm_bundle.ps1
 # No venv activation needed.
 
 $WorkspaceRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 $Python        = Join-Path $WorkspaceRoot ".venv\Scripts\python.exe"
 $OdooBin       = Join-Path $WorkspaceRoot "odoo-bin"
 $Conf          = Join-Path $WorkspaceRoot "odoo_local.conf"
-$ModuleFile    = Join-Path $PSScriptRoot  "katzer_bundle_modules.txt"
+$ModuleFile    = Join-Path $PSScriptRoot  "igm_bundle_modules.txt"
 
 function Get-ConfValue($key) {
     $line = Select-String "^\s*$key\s*=\s*(.+)" $Conf | Select-Object -First 1
@@ -48,7 +48,7 @@ if (-not $Installed) {
 $ToInstall = $Modules | Where-Object { $Installed -notcontains $_ }
 
 Write-Host ""
-Write-Host "Katzer Bundle - Gap Installer" -ForegroundColor Cyan
+Write-Host "Igm Bundle - Gap Installer" -ForegroundColor Cyan
 Write-Host "-----------------------------" -ForegroundColor Cyan
 Write-Host "Database  : $DbName"
 Write-Host "Bundle    : $($Modules.Count) modules total"

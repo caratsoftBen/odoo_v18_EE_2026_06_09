@@ -1,5 +1,5 @@
 # =============================================================================
-# Katzer Bundle — Standard Apps
+# Igm Bundle — Standard Apps
 # =============================================================================
 # Format:   technical_name    # Human-readable description
 # Disable:  prefix line with #
