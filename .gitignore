@@ -21,8 +21,6 @@ status
 odoo/filestore
 # maintenance migration scripts
 odoo/addons/base/maintenance
-# window installation config file
-/odoo.conf
 
 # generated for windows installer?
 install/win32/*.bat
@@ -50,3 +48,16 @@ package.json
 /man/
 /share/
 /src/
+
+.testdata/
+.clineignore
+venv/
+
+# Local configuration files
+*.conf
+
+# Logs
+*.log
+
+.vscode/
+*.code-workspace
