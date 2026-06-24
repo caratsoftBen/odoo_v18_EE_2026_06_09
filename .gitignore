@@ -51,6 +51,7 @@ package.json
 
 .testdata/
 .clineignore
+.clinerules
 venv/
 
 # Local configuration files
