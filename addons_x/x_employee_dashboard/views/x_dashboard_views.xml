@@ -28,11 +28,14 @@
                     <div class="row g-3">
 
                         <div class="col-12 col-md-4">
-                            <div class="border p-4 rounded bg-light text-center h-100 shadow-sm d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="fw-bold text-uppercase text-secondary mb-3">🛠️ Field Service</h5>
-                                <field name="x_field_service_count" readonly="1" class="fw-bold display-4 text-primary mb-2"/>
-                                <span class="text-body-secondary small">Open assignments waiting for you</span>
-                            </div>
+                            <button name="action_open_field_service" type="object"
+                                    class="btn btn-link p-0 border-0 w-100 h-100 text-decoration-none">
+                                <div class="border p-4 rounded bg-light text-center h-100 shadow-sm d-flex flex-column justify-content-center align-items-center">
+                                    <h5 class="fw-bold text-uppercase text-secondary mb-3">🛠️ Field Service</h5>
+                                    <field name="x_field_service_count" readonly="1" class="fw-bold display-4 text-primary mb-2"/>
+                                    <span class="text-body-secondary small">Open assignments waiting for you</span>
+                                </div>
+                            </button>
                         </div>
 
                         <div class="col-12 col-md-4">
