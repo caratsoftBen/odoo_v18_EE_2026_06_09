@@ -5,7 +5,10 @@
     'category': 'Operations',
     'summary': 'Tailored dashboard workspace for frontline employees.',
     'depends': ['base', 'project', 'industry_fsm', 'x_task_forecast'],
-    'data': ['views/x_dashboard_views.xml'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/x_dashboard_views.xml',
+    ],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
