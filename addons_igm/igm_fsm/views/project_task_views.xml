@@ -3,10 +3,71 @@
     <record id="igm_fsm_task_form_cleaner" model="ir.ui.view">
         <field name="name">igm.fsm.task.form.cleaner</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
+        <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="priority">1000</field>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_preview_worksheet'][hasclass('oe_stat_button')]" position="attributes">
+            <xpath expr="//header/field[@name='stage_id']" position="before">
+                <button name="action_igm_cleaner_done" type="object" string="Erledigt"
+                        class="btn-primary" invisible="fsm_done" groups="igm_fsm.group_fsm_cleaner"/>
+                <button name="%(action_igm_fsm_photo_wizard)d" type="action" string="Foto"
+                        class="btn-secondary" context="{'default_task_id': id}" groups="igm_fsm.group_fsm_cleaner"/>
+            </xpath>
+            <xpath expr="//header/field[@name='stage_id']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_start'][hasclass('btn-secondary')]" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_stop']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_pause']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_timer_resume']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='timer_start']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-primary')]" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate'][hasclass('btn-secondary')]" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='project_id']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//div[@name='project']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_ids']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='worksheet_template_id']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//field[@name='under_warranty']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+            <xpath expr="//div[@name='repeat_intervals']" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+
+            <xpath expr="//chatter" position="attributes">
                 <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
             </xpath>
         </field>

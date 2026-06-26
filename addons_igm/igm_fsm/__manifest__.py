@@ -23,9 +23,13 @@ Field Service → Configuration → Worksheet Templates.
     'license': 'LGPL-3',
     'depends': [
         'industry_fsm_report',
+        'industry_fsm_sale',
+        'timesheet_grid',
     ],
     'data': [
         'security/security_rules.xml',
+        'security/ir.model.access.csv',
+        'views/fsm_photo_wizard_views.xml',
         'views/project_task_views.xml',
         'data/worksheet_template.xml',
     ],

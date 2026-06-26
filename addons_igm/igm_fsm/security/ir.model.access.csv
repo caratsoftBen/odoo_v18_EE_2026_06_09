@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_igm_fsm_photo_wizard_cleaner,igm.fsm.photo.wizard.cleaner,model_igm_fsm_photo_wizard,igm_fsm.group_fsm_cleaner,1,1,1,1
+access_igm_fsm_photo_wizard_manager,igm.fsm.photo.wizard.manager,model_igm_fsm_photo_wizard,industry_fsm.group_fsm_manager,1,1,1,1

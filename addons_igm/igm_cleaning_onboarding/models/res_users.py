@@ -62,12 +62,12 @@ class ResUsers(models.Model):
             'email': email,
             'company_id': company.id,
             'company_ids': [(6, 0, company.ids)],
-            'groups_id': [(4, internal_group.id), (4, cleaner_group.id)],
         }
         for key in ('lang', 'tz', 'password'):
             if payload.get(key):
                 user_vals[key] = payload[key]
         user = self.create(user_vals)
+        user.write({'groups_id': [(6, 0, [internal_group.id, cleaner_group.id])]})
 
         employee_vals = {
             'name': name,
