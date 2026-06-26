@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_fsm_cleaner" model="res.groups">
+        <field name="name">Cleaner</field>
+        <field name="category_id" ref="base.module_category_services_field_service"/>
+        <field name="implied_ids" eval="[(4, ref('industry_fsm.group_fsm_user'))]"/>
+    </record>
+</odoo>

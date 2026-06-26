@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="igm_fsm_task_form_cleaner" model="ir.ui.view">
+        <field name="name">igm.fsm.task.form.cleaner</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_preview_worksheet'][hasclass('oe_stat_button')]" position="attributes">
+                <attribute name="groups">!igm_fsm.group_fsm_cleaner</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

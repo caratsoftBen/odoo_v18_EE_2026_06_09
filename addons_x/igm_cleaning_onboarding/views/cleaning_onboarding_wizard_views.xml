@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="igm_cleaning_onboarding_wizard_form" model="ir.ui.view">
+        <field name="name">igm.cleaning.onboarding.wizard.form</field>
+        <field name="model">igm.cleaning.onboarding.wizard</field>
+        <field name="arch" type="xml">
+            <form string="New Cleaning-Service User">
+                <sheet>
+                    <group>
+                        <group string="Person">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                        </group>
+                        <group string="Role &amp; Access">
+                            <field name="job_title"/>
+                            <field name="department_id"/>
+                            <field name="lang"/>
+                            <field name="password" password="True"/>
+                        </group>
+                    </group>
+                    <group string="Employment Contract (optional)">
+                        <field name="create_contract"/>
+                        <field name="wage" invisible="not create_contract" required="create_contract"/>
+                        <field name="contract_date_start" invisible="not create_contract"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_cleaner" type="object" string="Create Cleaner" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_igm_cleaning_onboarding_wizard" model="ir.actions.act_window">
+        <field name="name">New Cleaning-Service User</field>
+        <field name="res_model">igm.cleaning.onboarding.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_igm_cleaning_onboarding"
+        name="[IGM] New Cleaning User"
+        action="action_igm_cleaning_onboarding_wizard"
+        parent="base.menu_users"
+        sequence="50"
+        groups="base.group_system"/>
+</odoo>
