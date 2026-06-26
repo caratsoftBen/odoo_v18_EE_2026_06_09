@@ -10,14 +10,14 @@
 
     <record id="action_open_employee_hub" model="ir.actions.act_window">
         <field name="name">My Hub</field>
-        <field name="res_model">x.employee.dashboard</field>
+        <field name="res_model">igm.employee.dashboard</field>
         <field name="view_mode">form</field>
         <field name="target">main</field>
     </record>
 
-    <record id="view_x_employee_dashboard_form" model="ir.ui.view">
-        <field name="name">x.employee.dashboard.form</field>
-        <field name="model">x.employee.dashboard</field>
+    <record id="view_igm_employee_dashboard_form" model="ir.ui.view">
+        <field name="name">igm.employee.dashboard.form</field>
+        <field name="model">igm.employee.dashboard</field>
         <field name="arch" type="xml">
             <form string="Workspace Hub" create="false" edit="false" delete="false">
                 <sheet>
@@ -32,7 +32,7 @@
                                     class="btn btn-link p-0 border-0 w-100 h-100 text-decoration-none">
                                 <div class="border p-4 rounded bg-light text-center h-100 shadow-sm d-flex flex-column justify-content-center align-items-center">
                                     <h5 class="fw-bold text-uppercase text-secondary mb-3">🛠️ Field Service</h5>
-                                    <field name="x_field_service_count" readonly="1" class="fw-bold display-4 text-primary mb-2"/>
+                                    <field name="igm_field_service_count" readonly="1" class="fw-bold display-4 text-primary mb-2"/>
                                     <span class="text-body-secondary small">Open assignments waiting for you</span>
                                 </div>
                             </button>
@@ -51,13 +51,15 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-4">
-                            <div class="border p-4 rounded bg-light h-100 shadow-sm opacity-75 d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="fw-bold text-uppercase text-secondary mb-3">📦 Future Modules</h5>
-                                <p class="text-body-secondary small text-center m-0">
-                                    <em>[ Placeholder for future custom x_app integration ]</em>
-                                </p>
-                            </div>
+                        <div class="col-12 col-md-4" groups="base.group_system">
+                            <button name="%(igm_cleaning_onboarding.action_igm_cleaning_onboarding_wizard)d" type="action"
+                                    class="btn btn-link p-0 border-0 w-100 h-100 text-decoration-none">
+                                <div class="border p-4 rounded bg-light text-center h-100 shadow-sm d-flex flex-column justify-content-center align-items-center">
+                                    <h5 class="fw-bold text-uppercase text-secondary mb-3">🧹 Onboarding</h5>
+                                    <i class="fa fa-user-plus display-4 text-primary mb-2"/>
+                                    <span class="text-body-secondary small">Create a new cleaning-service user</span>
+                                </div>
+                            </button>
                         </div>
 
                     </div>
@@ -66,10 +68,10 @@
         </field>
     </record>
 
-<menuitem id="menu_x_employee_dashboard_root" 
+<menuitem id="menu_igm_employee_dashboard_root" 
           name="Operations Hub" 
           sequence="5"
           action="action_open_employee_hub"
-          web_icon="x_employee_dashboard,static/description/icon.png"/>
+          web_icon="igm_employee_dashboard,static/description/icon.png"/>
 
 </odoo>

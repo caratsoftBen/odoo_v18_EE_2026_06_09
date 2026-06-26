@@ -4,19 +4,19 @@
         <!-- Seed the main company (UHG) with the legacy footer values.
              noupdate="1": applied once on install; later edits in Settings persist. -->
         <record id="base.main_company" model="res.company">
-            <field name="x_footer_enabled" eval="True"/>
-            <field name="x_footer_manager">Josef Katzer</field>
-            <field name="x_footer_phone">+49 040 85381 550</field>
-            <field name="x_footer_fax">+49 040 85381195</field>
-            <field name="x_footer_email">info@caratsoft.de</field>
-            <field name="x_footer_seat">Hamburg</field>
-            <field name="x_footer_register_court">Hamburg</field>
-            <field name="x_footer_registry">HRB 23944</field>
-            <field name="x_footer_tax_number">45 765 00179</field>
-            <field name="x_footer_vat">DE118539525</field>
-            <field name="x_footer_bank_name">Hamburger Volksbank</field>
-            <field name="x_footer_iban">DE63 2019 0003 0019 0774 08</field>
-            <field name="x_footer_bic">GENODEF1HH2</field>
+            <field name="igm_footer_enabled" eval="True"/>
+            <field name="igm_footer_manager">Josef Katzer</field>
+            <field name="igm_footer_phone">+49 040 85381 550</field>
+            <field name="igm_footer_fax">+49 040 85381195</field>
+            <field name="igm_footer_email">info@caratsoft.de</field>
+            <field name="igm_footer_seat">Hamburg</field>
+            <field name="igm_footer_register_court">Hamburg</field>
+            <field name="igm_footer_registry">HRB 23944</field>
+            <field name="igm_footer_tax_number">45 765 00179</field>
+            <field name="igm_footer_vat">DE118539525</field>
+            <field name="igm_footer_bank_name">Hamburger Volksbank</field>
+            <field name="igm_footer_iban">DE63 2019 0003 0019 0774 08</field>
+            <field name="igm_footer_bic">GENODEF1HH2</field>
         </record>
     </data>
 </odoo>

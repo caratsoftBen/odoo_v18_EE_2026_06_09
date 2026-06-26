@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="res_config_settings_view_form_x_forecast" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.x.forecast</field>
+    <record id="res_config_settings_view_form_igm_forecast" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.igm.forecast</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="[IGM] Task Forecast" name="x_task_forecast"
-                     logo="/x_task_forecast/static/description/icon.png">
+                <app string="[IGM] Task Forecast" name="igm_task_forecast"
+                     logo="/igm_task_forecast/static/description/icon.png">
                     <block title="Recurring Task Forecast"
                            help="Generate open recurring tasks ahead instead of one at a time. The run frequency is set in Settings → Technical → Scheduled Actions → 'Generate Recurring Task Forecast'.">
                         <setting type="header" string="Generate recurring tasks ahead"
                                  help="When off, Odoo keeps its default behaviour (one occurrence created when the previous is closed).">
-                            <field name="x_forecast_enabled"/>
+                            <field name="igm_forecast_enabled"/>
                         </setting>
-                        <setting string="Forecast horizon" invisible="not x_forecast_enabled"
+                        <setting string="Forecast horizon" invisible="not igm_forecast_enabled"
                                  help="How far ahead tasks are generated.">
                             <div class="content-group">
                                 <div class="row">
-                                    <field name="x_forecast_horizon_days" class="col-2"/>
+                                    <field name="igm_forecast_horizon_days" class="col-2"/>
                                     <span class="col">days ahead</span>
                                 </div>
                             </div>
                         </setting>
-                        <setting string="Skip public holidays" invisible="not x_forecast_enabled"
+                        <setting string="Skip public holidays" invisible="not igm_forecast_enabled"
                                  help="Occurrences on a public holiday (Time Off → Public Holidays) are not created.">
-                            <field name="x_forecast_skip_holidays"/>
+                            <field name="igm_forecast_skip_holidays"/>
                         </setting>
                     </block>
                 </app>

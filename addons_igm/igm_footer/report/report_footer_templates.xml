@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Reusable UHG footer block: two association logos + three info columns. -->
-    <template id="x_footer_block">
-        <div t-if="company.x_footer_enabled" class="x_footer mt-2">
+    <template id="igm_footer_block">
+        <div t-if="company.igm_footer_enabled" class="igm_footer mt-2">
             <div class="mb-2">
-                <img src="/x_footer/static/src/img/handwerk.jpg"
+                <img src="/igm_footer/static/src/img/handwerk.jpg"
                      style="height:32px; margin-right:24px;" alt="Das Handwerk"/>
-                <img src="/x_footer/static/src/img/logo_nordost_weiss.png"
+                <img src="/igm_footer/static/src/img/logo_nordost_weiss.png"
                      style="height:32px;" alt="Die Gebäudedienstleister"/>
             </div>
             <div class="row" style="font-size:8px; line-height:1.3;">
                 <div class="col-4">
-                    <div t-if="company.x_footer_manager">Geschäftsführer <span t-esc="company.x_footer_manager"/></div>
-                    <div t-if="company.x_footer_phone">Telefon: <span t-esc="company.x_footer_phone"/></div>
-                    <div t-if="company.x_footer_fax">Fax: <span t-esc="company.x_footer_fax"/></div>
-                    <div t-if="company.x_footer_email"><span t-esc="company.x_footer_email"/></div>
+                    <div t-if="company.igm_footer_manager">Geschäftsführer <span t-esc="company.igm_footer_manager"/></div>
+                    <div t-if="company.igm_footer_phone">Telefon: <span t-esc="company.igm_footer_phone"/></div>
+                    <div t-if="company.igm_footer_fax">Fax: <span t-esc="company.igm_footer_fax"/></div>
+                    <div t-if="company.igm_footer_email"><span t-esc="company.igm_footer_email"/></div>
                 </div>
                 <div class="col-4">
-                    <div t-if="company.x_footer_seat">Sitz: <span t-esc="company.x_footer_seat"/></div>
-                    <div t-if="company.x_footer_register_court">Registergericht: <span t-esc="company.x_footer_register_court"/></div>
-                    <div t-if="company.x_footer_registry">Registernummer: <span t-esc="company.x_footer_registry"/></div>
-                    <div t-if="company.x_footer_tax_number">Steuernummer: <span t-esc="company.x_footer_tax_number"/></div>
-                    <div t-if="company.x_footer_vat">Umsatzsteuer ID: <span t-esc="company.x_footer_vat"/></div>
+                    <div t-if="company.igm_footer_seat">Sitz: <span t-esc="company.igm_footer_seat"/></div>
+                    <div t-if="company.igm_footer_register_court">Registergericht: <span t-esc="company.igm_footer_register_court"/></div>
+                    <div t-if="company.igm_footer_registry">Registernummer: <span t-esc="company.igm_footer_registry"/></div>
+                    <div t-if="company.igm_footer_tax_number">Steuernummer: <span t-esc="company.igm_footer_tax_number"/></div>
+                    <div t-if="company.igm_footer_vat">Umsatzsteuer ID: <span t-esc="company.igm_footer_vat"/></div>
                 </div>
                 <div class="col-4">
-                    <div t-if="company.x_footer_bank_name">Bank: <span t-esc="company.x_footer_bank_name"/></div>
-                    <div t-if="company.x_footer_iban">IBAN: <span t-esc="company.x_footer_iban"/></div>
-                    <div t-if="company.x_footer_bic">BIC: <span t-esc="company.x_footer_bic"/></div>
+                    <div t-if="company.igm_footer_bank_name">Bank: <span t-esc="company.igm_footer_bank_name"/></div>
+                    <div t-if="company.igm_footer_iban">IBAN: <span t-esc="company.igm_footer_iban"/></div>
+                    <div t-if="company.igm_footer_bic">BIC: <span t-esc="company.igm_footer_bic"/></div>
                 </div>
             </div>
         </div>
     </template>
 
     <!-- Inject the block into each standard external layout footer. -->
-    <template id="external_layout_standard_x" inherit_id="web.external_layout_standard">
+    <template id="external_layout_standard_igm" inherit_id="web.external_layout_standard">
         <xpath expr="//div[hasclass('o_footer_content')]" position="before">
-            <t t-call="x_footer.x_footer_block"/>
+            <t t-call="igm_footer.igm_footer_block"/>
         </xpath>
     </template>
 
-    <template id="external_layout_boxed_x" inherit_id="web.external_layout_boxed">
+    <template id="external_layout_boxed_igm" inherit_id="web.external_layout_boxed">
         <xpath expr="//div[hasclass('o_footer_content')]" position="before">
-            <t t-call="x_footer.x_footer_block"/>
+            <t t-call="igm_footer.igm_footer_block"/>
         </xpath>
     </template>
 
-    <template id="external_layout_bold_x" inherit_id="web.external_layout_bold">
+    <template id="external_layout_bold_igm" inherit_id="web.external_layout_bold">
         <xpath expr="//div[hasclass('o_footer_content')]" position="before">
-            <t t-call="x_footer.x_footer_block"/>
+            <t t-call="igm_footer.igm_footer_block"/>
         </xpath>
     </template>
 
-    <template id="external_layout_striped_x" inherit_id="web.external_layout_striped">
+    <template id="external_layout_striped_igm" inherit_id="web.external_layout_striped">
         <xpath expr="//div[hasclass('o_footer_content')]" position="before">
-            <t t-call="x_footer.x_footer_block"/>
+            <t t-call="igm_footer.igm_footer_block"/>
         </xpath>
     </template>
 
     <!-- German DIN 5008 layout has its own footer (no o_footer_content):
          hide its built-in legal line when our footer is on, and inject ours. -->
-    <template id="external_layout_din5008_x" inherit_id="l10n_din5008.external_layout_din5008">
+    <template id="external_layout_din5008_igm" inherit_id="l10n_din5008.external_layout_din5008">
         <xpath expr="//div[hasclass('company_details')]" position="attributes">
-            <attribute name="t-if">not company.x_footer_enabled</attribute>
+            <attribute name="t-if">not company.igm_footer_enabled</attribute>
         </xpath>
         <xpath expr="//div[hasclass('company_details')]" position="before">
-            <t t-call="x_footer.x_footer_block"/>
+            <t t-call="igm_footer.igm_footer_block"/>
         </xpath>
     </template>
 </odoo>

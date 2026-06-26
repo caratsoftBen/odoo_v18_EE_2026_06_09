@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="structure_type_minijob" model="hr.payroll.structure.type">
+            <field name="name">[IGM] Minijob / Geringfügige Beschäftigung</field>
+            <field name="wage_type">hourly</field>
+            <field name="default_schedule_pay">monthly</field>
+            <field name="country_id" ref="base.de"/>
+        </record>
+
+        <record id="structure_minijob" model="hr.payroll.structure">
+            <field name="name">Minijob (Stundenlohn)</field>
+            <field name="type_id" ref="structure_type_minijob"/>
+            <field name="country_id" ref="base.de"/>
+            <field name="use_worked_day_lines" eval="False"/>
+            <field name="rule_ids" eval="[]"/>
+        </record>
+
+        <record id="structure_type_minijob" model="hr.payroll.structure.type">
+            <field name="default_struct_id" ref="structure_minijob"/>
+        </record>
+
+        <record id="rule_minijob_basic" model="hr.salary.rule">
+            <field name="name">Grundlohn (Stunden × Stundenlohn)</field>
+            <field name="code">BASIC</field>
+            <field name="sequence">1</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="structure_minijob"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+hours = sum(payslip.env['account.analytic.line'].search([
+    ('employee_id', '=', employee.id),
+    ('project_id', '!=', False),
+    ('date', '>=', payslip.date_from),
+    ('date', '&lt;=', payslip.date_to),
+]).mapped('unit_amount'))
+rate = contract.hourly_wage
+gross = hours * rate
+
+# Prototype flat employer contributions - NOT legally certified
+er_health = gross * 0.13
+er_pension = gross * 0.15
+er_flat_tax = gross * 0.02
+er_total = er_health + er_pension + er_flat_tax
+
+# Minijob: no employee social security / wage tax (paid flat by employer)
+ee_deduction = 0.0
+
+result_name = 'Minijob: %.2f h × %.2f EUR/h' % (hours, rate)
+result = rate
+result_qty = hours
+            </field>
+        </record>
+
+        <record id="rule_minijob_gross" model="hr.salary.rule">
+            <field name="name">Bruttolohn</field>
+            <field name="code">GROSS</field>
+            <field name="sequence">100</field>
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="struct_id" ref="structure_minijob"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result_name = 'Bruttolohn'
+result = categories['BASIC']
+            </field>
+        </record>
+
+        <record id="rule_minijob_employer_sv" model="hr.salary.rule">
+            <field name="name">Arbeitgeber-Pauschalabgaben (KV/RV/Steuer)</field>
+            <field name="code">SV_AG</field>
+            <field name="sequence">110</field>
+            <field name="category_id" ref="hr_payroll.COMP"/>
+            <field name="struct_id" ref="structure_minijob"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = er_total</field>
+        </record>
+
+        <record id="rule_minijob_employee_ded" model="hr.salary.rule">
+            <field name="name">Arbeitnehmer-Abzüge</field>
+            <field name="code">EE_DED</field>
+            <field name="sequence">120</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="structure_minijob"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -ee_deduction</field>
+        </record>
+
+        <record id="rule_minijob_net" model="hr.salary.rule">
+            <field name="name">Nettolohn</field>
+            <field name="code">NET</field>
+            <field name="sequence">200</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="struct_id" ref="structure_minijob"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result_name = 'Nettolohn'
+result = categories['BASIC'] + categories['DED']
+            </field>
+        </record>
+
+    </data>
+</odoo>

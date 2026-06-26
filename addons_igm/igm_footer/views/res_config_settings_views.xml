@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="res_config_settings_view_form_x_footer" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.x.footer</field>
+    <record id="res_config_settings_view_form_igm_footer" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.igm.footer</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="UHG Footer" name="x_footer"
-                     logo="/x_footer/static/description/icon.png">
+                <app string="UHG Footer" name="igm_footer"
+                     logo="/igm_footer/static/description/icon.png">
                     <block title="Document Footer"
                            help="Legal footer shown on the selected company's PDF documents (invoices, etc.).">
                         <setting type="header" string="Show UHG footer on documents"
                                  help="Enable the custom legal footer for the company selected above.">
-                            <field name="x_footer_enabled"/>
+                            <field name="igm_footer_enabled"/>
                             <span class="text-muted">Per company. Toggle off to fall back to the standard Odoo footer.</span>
                         </setting>
                     </block>
-                    <block title="Contact" name="x_footer_contact" invisible="not x_footer_enabled">
+                    <block title="Contact" name="igm_footer_contact" invisible="not igm_footer_enabled">
                         <setting string="Managing Director">
-                            <field name="x_footer_manager"/>
+                            <field name="igm_footer_manager"/>
                         </setting>
                         <setting string="Phone">
-                            <field name="x_footer_phone"/>
+                            <field name="igm_footer_phone"/>
                         </setting>
                         <setting string="Fax">
-                            <field name="x_footer_fax"/>
+                            <field name="igm_footer_fax"/>
                         </setting>
                         <setting string="Email">
-                            <field name="x_footer_email"/>
+                            <field name="igm_footer_email"/>
                         </setting>
                     </block>
-                    <block title="Legal" name="x_footer_legal" invisible="not x_footer_enabled">
+                    <block title="Legal" name="igm_footer_legal" invisible="not igm_footer_enabled">
                         <setting string="Registered Seat">
-                            <field name="x_footer_seat"/>
+                            <field name="igm_footer_seat"/>
                         </setting>
                         <setting string="Register Court">
-                            <field name="x_footer_register_court"/>
+                            <field name="igm_footer_register_court"/>
                         </setting>
                         <setting string="Registration Number">
-                            <field name="x_footer_registry"/>
+                            <field name="igm_footer_registry"/>
                         </setting>
                         <setting string="Tax Number">
-                            <field name="x_footer_tax_number"/>
+                            <field name="igm_footer_tax_number"/>
                         </setting>
                         <setting string="VAT / USt-ID">
-                            <field name="x_footer_vat"/>
+                            <field name="igm_footer_vat"/>
                         </setting>
                     </block>
-                    <block title="Bank" name="x_footer_bank" invisible="not x_footer_enabled">
+                    <block title="Bank" name="igm_footer_bank" invisible="not igm_footer_enabled">
                         <setting string="Bank Name">
-                            <field name="x_footer_bank_name"/>
+                            <field name="igm_footer_bank_name"/>
                         </setting>
                         <setting string="IBAN">
-                            <field name="x_footer_iban"/>
+                            <field name="igm_footer_iban"/>
                         </setting>
                         <setting string="BIC">
-                            <field name="x_footer_bic"/>
+                            <field name="igm_footer_bic"/>
                         </setting>
                     </block>
                 </app>

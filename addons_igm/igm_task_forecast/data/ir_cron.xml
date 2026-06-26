@@ -3,7 +3,7 @@
     <!-- noupdate: the run frequency is meant to be tuned in the standard
          Scheduled Actions UI; module upgrades must not reset it. -->
     <data noupdate="1">
-        <record id="ir_cron_x_task_forecast" model="ir.cron">
+        <record id="ir_cron_igm_task_forecast" model="ir.cron">
             <field name="name">[IGM] Generate Recurring Task Forecast</field>
             <field name="model_id" ref="project.model_project_task_recurrence"/>
             <field name="state">code</field>

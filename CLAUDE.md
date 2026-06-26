@@ -7,7 +7,7 @@
   - `odoo/addons/` — framework core (base, web, …)
   - `addons/` — Odoo **CE** modules
   - `addons_ee/` — **Enterprise** modules (git submodule)
-  - `addons_x/` — **our custom modules** (the custom entry on `addons_path`)
+  - `addons_igm/` — **our custom modules** (the custom entry on `addons_path`)
   - `igm_tools/` — operational PowerShell scripts + `master_data/` (NOT Odoo modules)
 - **Config**: `odoo_local.conf` · **DB**: `odoo_v18_2026_06_11_skr03` · **Postgres**: `localhost:5432` (user/pw `odoo`/`odoo`)
 - **Runtime**: launched via the **VSCode Python debugger** using the **venv** interpreter
@@ -38,15 +38,13 @@
 - **Prefix**: custom models/fields use the group prefix **`igm_`** (models `igm.<name>`, fields
   `igm_<name>`). **Never use `x_`** — it is reserved by Odoo Studio for UI-created fields/models.
   Display names and content (e.g. a person's name) are NOT prefixes and stay as-is.
-  *(Current modules `x_footer` / `x_task_forecast` are on a temporary `x_` test prefix, pending
-  rename to `igm_`.)*
 - **Display-name tagging**: tag the names of **admin-facing** records (Scheduled Actions, Server
   Actions, Automated Actions, technical menu items) with a readable **`[IGM]`** label, e.g.
   `[IGM] Generate Recurring Task Forecast`, so they are scannable among the many standard records.
   Use the bracket label, NOT the snake_case `igm_`, for display text. **Never tag end-user-facing
   strings** (button labels, customer-visible menus, report/footer text, field labels) — keep those
   natural and translatable.
-- **Placement**: every custom module goes in `addons_x/`, named with the `igm_` prefix.
+- **Placement**: every custom module goes in `addons_igm/`, named with the `igm_` prefix.
 - **App icon**: every custom app uses the IGM logo. Copy the master
   `igm_tools/branding/igm_app_icon.png` to the module's `static/description/icon.png` (that's the
   file Odoo shows as the Apps tile). Point any settings `<app logo="...">` at the module's own
@@ -76,7 +74,7 @@
 - Install or test a module:
   `& .venv\Scripts\python.exe odoo-bin -c odoo_local.conf -d odoo_v18_2026_06_11_skr03 -i your_module --test-enable --stop-after-init`
 - Scaffold a module skeleton:
-  `& .venv\Scripts\python.exe odoo-bin scaffold your_module addons_x`
+  `& .venv\Scripts\python.exe odoo-bin scaffold your_module addons_igm`
 - Make a new module appear in **Apps**: click **Update Apps List** (and set `'application': True`
   for it to show as an app tile).
 - After code changes: **restart the VSCode debug session** (autoreload is off unless `watchdog`

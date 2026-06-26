@@ -1,1 +1,1 @@
-from . import x_dashboard
+from . import igm_dashboard

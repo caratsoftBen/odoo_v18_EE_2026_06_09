@@ -14,7 +14,7 @@ bank details in three columns. Per-company settings with an on/off toggle.
         'views/res_config_settings_views.xml',
         'report/report_paperformat.xml',
         'report/report_footer_templates.xml',
-        'data/x_footer_data.xml',
+        'data/igm_footer_data.xml',
     ],
     'installable': True,
     'application': True,

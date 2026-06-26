@@ -17,25 +17,25 @@ class ProjectTaskRecurrence(models.Model):
     def _cron_generate_forecast(self):
         """Scheduled entry point: extend every open recurrence up to the horizon."""
         company = self.env.company
-        if not company.x_forecast_enabled:
+        if not company.igm_forecast_enabled:
             return False
 
         today = fields.Date.context_today(self)
-        horizon = today + timedelta(days=company.x_forecast_horizon_days or 30)
+        horizon = today + timedelta(days=company.igm_forecast_horizon_days or 30)
         holidays = set()
-        if company.x_forecast_skip_holidays:
-            holidays = self._x_get_holiday_dates(today, horizon, company)
+        if company.igm_forecast_skip_holidays:
+            holidays = self._igm_get_holiday_dates(today, horizon, company)
 
         for recurrence in self.search([]):
             try:
                 with self.env.cr.savepoint():
-                    recurrence._x_extend_to_horizon(today, horizon, holidays)
+                    recurrence._igm_extend_to_horizon(today, horizon, holidays)
             except Exception:
                 _logger.exception(
                     "Task forecast: failed to extend recurrence %s", recurrence.id)
         return True
 
-    def _x_extend_to_horizon(self, today, horizon, holidays):
+    def _igm_extend_to_horizon(self, today, horizon, holidays):
         """Create occurrences for this recurrence up to ``horizon``.
 
         Relies on the native ``_create_next_occurrence`` so all field copying
@@ -69,7 +69,7 @@ class ProjectTaskRecurrence(models.Model):
 
         if holidays:
             def _is_on_holiday(task):
-                day = self._x_service_date(task)
+                day = self._igm_service_date(task)
                 return bool(day) and day >= today and day in holidays
 
             on_holiday = self.env['project.task'].search(
@@ -79,7 +79,7 @@ class ProjectTaskRecurrence(models.Model):
                 on_holiday.with_context(tracking_disable=True).unlink()
 
     @api.model
-    def _x_service_date(self, task):
+    def _igm_service_date(self, task):
         """Return the date the work is scheduled on (planned start, else deadline)."""
         dt = False
         if 'planned_date_begin' in task._fields and task.planned_date_begin:
@@ -89,7 +89,7 @@ class ProjectTaskRecurrence(models.Model):
         return dt.date() if dt else False
 
     @api.model
-    def _x_get_holiday_dates(self, start, end, company):
+    def _igm_get_holiday_dates(self, start, end, company):
         """Set of public-holiday dates in [start, end].
 
         Public holidays are the Time Off app's public holidays, stored as
