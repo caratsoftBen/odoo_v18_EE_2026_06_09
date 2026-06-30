@@ -1,5 +1,5 @@
 {
-    'name': 'X Recurring Task Forecast',
+    'name': 'IGM Recurring Task Forecast',
     'version': '18.0.1.0.0',
     'category': 'Services/Project',
     'summary': 'Generate recurring tasks ahead over a horizon, skipping public holidays',

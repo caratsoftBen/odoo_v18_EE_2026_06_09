@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="action_igm_task_forecast_settings" model="ir.actions.act_window">
+        <field name="name">[IGM] Task Forecast Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'igm_task_forecast', 'bin_size': False}</field>
+    </record>
+
     <record id="res_config_settings_view_form_igm_forecast" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.igm.forecast</field>
         <field name="model">res.config.settings</field>

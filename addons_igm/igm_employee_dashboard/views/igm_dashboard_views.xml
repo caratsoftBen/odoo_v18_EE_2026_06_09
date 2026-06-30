@@ -2,10 +2,11 @@
 <odoo>
 
     <record id="action_redirect_igm_cron" model="ir.actions.act_window">
-        <field name="name">Scheduled Action Control</field>
+        <field name="name">Run Recurring Task Forecast</field>
         <field name="res_model">ir.cron</field>
+        <field name="res_id" ref="igm_task_forecast.ir_cron_igm_task_forecast"/>
         <field name="view_mode">form</field>
-        <field name="domain">[('name', '=', '[IGM] Generate Recurring Task Forecast')]</field>
+        <field name="target">current</field>
     </record>
 
     <record id="action_open_employee_hub" model="ir.actions.act_window">
@@ -41,12 +42,18 @@
                         <div class="col-12 col-md-4">
                             <div class="border p-4 rounded bg-light h-100 shadow-sm d-flex flex-column justify-content-between">
                                 <div>
-                                    <h5 class="fw-bold text-uppercase text-secondary mb-3">⚙️ System Actions</h5>
-                                    <p class="text-body-secondary small mb-4">Execute or adjust the background task scheduling algorithms manually:</p>
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="fw-bold text-uppercase text-secondary mb-0">🔄 Recurring Forecast</h5>
+                                        <button name="%(igm_task_forecast.action_igm_task_forecast_settings)d"
+                                                type="action" icon="fa-cog"
+                                                class="btn btn-link p-0 text-secondary"
+                                                title="Forecast settings"/>
+                                    </div>
+                                    <p class="text-body-secondary small mb-4">Generate the upcoming recurring tasks now.</p>
                                 </div>
                                 <button name="%(action_redirect_igm_cron)d"
                                         type="action"
-                                        string="Open Forecast Settings"
+                                        string="Run Forecast Now"
                                         class="btn btn-primary w-100 py-2"/>
                             </div>
                         </div>
