@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="igm_fsm_app.FsmApp">
+        <div class="o_fsm_app">
+            <div class="o_fsm_screen">
+                <t t-if="state.loading">
+                    <div class="o_fsm_state">Lädt…</div>
+                </t>
+                <t t-elif="state.error">
+                    <div class="o_fsm_state">Fehler: <t t-esc="state.error"/></div>
+                </t>
+                <t t-elif="!state.task">
+                    <div class="o_fsm_state">Keine offene Aufgabe.</div>
+                </t>
+                <t t-else="">
+                    <div class="o_fsm_appbar">
+                        <div>
+                            <div class="eyebrow">Reinigung</div>
+                            <div class="sub">Heutige Aufgabe</div>
+                        </div>
+                    </div>
+
+                    <div class="o_fsm_scroll">
+                        <span class="o_fsm_chip" t-att-class="{ done: state.completed }">
+                            <span class="dot"/>
+                            <t t-esc="state.completed ? 'Erledigt' : 'Geplant'"/>
+                        </span>
+                        <h1 class="o_fsm_title" t-esc="state.task.title"/>
+
+                        <div class="o_fsm_card">
+                            <div class="o_fsm_label">Kunde</div>
+                            <div style="font-size:17px;font-weight:600;margin-bottom:3px;" t-esc="state.task.customer.name"/>
+                            <div style="font-size:14.5px;color:#6b6770;line-height:1.4;" t-esc="state.task.customer.address"/>
+                            <a class="o_fsm_link" t-att-href="mapsUrl(state.task.customer.address)" target="_blank">Route öffnen <span>→</span></a>
+                            <button t-if="state.task.contact" class="o_fsm_contact" t-on-click="openContact">
+                                <span class="o_fsm_avatar" t-esc="initials(state.task.contact.name)"/>
+                                <span class="grow">
+                                    <span style="font-size:15.5px;font-weight:600;" t-esc="state.task.contact.name"/>
+                                    <span style="font-size:13px;color:#9b96a3;"><t t-esc="state.task.contact.role"/> · Ansprechpartner</span>
+                                </span>
+                                <span class="chev">›</span>
+                            </button>
+                        </div>
+
+                        <div class="o_fsm_card tight">
+                            <div class="o_fsm_row bb">
+                                <div>
+                                    <div class="o_fsm_label" style="margin-bottom:4px;">Geplant</div>
+                                    <div style="font-size:15.5px;" t-esc="planned"/>
+                                </div>
+                                <span class="o_fsm_readonly">nur lesen</span>
+                            </div>
+                            <div class="o_fsm_row">
+                                <div class="o_fsm_label" style="margin-bottom:0;">Zugewiesene Zeit</div>
+                                <div class="o_fsm_bigtime"><t t-esc="loggedTime"/> <small>h</small></div>
+                            </div>
+                            <button class="o_fsm_adjust" t-on-click="toggleAdjust">
+                                <span class="l"><span class="ic"><t t-esc="state.adjustOpen ? '–' : '+'"/></span>Zeit anpassen</span>
+                                <span class="hint" t-esc="state.adjustOpen ? 'schließen' : (state.overridden ? 'angepasst' : 'Standard ' + allocatedLabel)"/>
+                            </button>
+                            <t t-if="state.adjustOpen">
+                                <div class="o_fsm_stepper">
+                                    <button class="o_fsm_step" t-on-click="decTime">–</button>
+                                    <div class="o_fsm_stepval">
+                                        <div class="v" t-esc="adjLabel"/>
+                                        <div class="s">Schritte: 15 Min</div>
+                                    </div>
+                                    <button class="o_fsm_step" t-on-click="incTime">+</button>
+                                </div>
+                                <button t-if="state.overridden" class="o_fsm_reset" t-on-click="resetTime">Auf <t t-esc="allocatedLabel"/> zurücksetzen</button>
+                            </t>
+                        </div>
+
+                        <div t-if="state.task.note" class="o_fsm_card">
+                            <div class="o_fsm_label">Notiz vom Büro</div>
+                            <p class="o_fsm_note" t-esc="state.task.note"/>
+                        </div>
+
+                        <div class="o_fsm_card">
+                            <div class="o_fsm_row" style="padding:0;margin-bottom:14px;">
+                                <span class="o_fsm_label" style="margin-bottom:0;">Fotos</span>
+                                <span style="font-size:12px;color:#9b96a3;"><t t-esc="state.task.photoCount"/>/3</span>
+                            </div>
+                            <div t-if="state.previews.length" class="o_fsm_photos">
+                                <t t-foreach="state.previews" t-as="src" t-key="src_index">
+                                    <div class="ph"><img t-att-src="src"/></div>
+                                </t>
+                            </div>
+                            <button class="o_fsm_outline" t-on-click="openFoto">📷 Foto hinzufügen</button>
+                        </div>
+                    </div>
+
+                    <div class="o_fsm_footer">
+                        <button class="o_fsm_hero" t-att-class="{ done: state.completed }" t-att-disabled="state.completed" t-on-click="openConfirm">
+                            <t t-esc="state.completed ? 'Erledigt ✓' : 'Erledigt'"/>
+                        </button>
+                    </div>
+
+                    <input type="file" t-ref="fileInput" accept="image/*" capture="environment" style="display:none;" t-on-change="onFile"/>
+
+                    <t t-if="state.contactOpen and state.task.contact">
+                        <div class="o_fsm_overlay" t-on-click="closeContact">
+                            <div class="o_fsm_sheet" t-on-click.stop="stop">
+                                <div class="o_fsm_grip"/>
+                                <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+                                    <span class="o_fsm_avatar" style="width:58px;height:58px;font-size:20px;" t-esc="initials(state.task.contact.name)"/>
+                                    <div class="grow">
+                                        <span style="font-size:19px;font-weight:700;" t-esc="state.task.contact.name"/>
+                                        <span style="font-size:14px;color:#6b6770;" t-esc="state.task.contact.role"/>
+                                        <span style="font-size:13px;color:#9b96a3;" t-esc="state.task.customer.name"/>
+                                    </div>
+                                </div>
+                                <a t-if="state.task.contact.phone" class="o_fsm_clink" t-att-href="'tel:' + wa(state.task.contact.phone)">
+                                    <span class="cic" style="background:#1f8a51;">☎</span>
+                                    <span class="grow"><span style="font-size:16px;font-weight:600;">Anrufen</span><span style="font-size:13.5px;color:#9b96a3;" t-esc="state.task.contact.phone"/></span>
+                                </a>
+                                <a t-if="state.task.contact.mobile" class="o_fsm_clink" t-att-href="'https://wa.me/' + wa(state.task.contact.mobile)" target="_blank">
+                                    <span class="cic" style="background:#25d366;">✆</span>
+                                    <span class="grow"><span style="font-size:16px;font-weight:600;">WhatsApp</span><span style="font-size:13.5px;color:#9b96a3;" t-esc="state.task.contact.mobile"/></span>
+                                </a>
+                                <a t-if="state.task.contact.email" class="o_fsm_clink" t-att-href="'mailto:' + state.task.contact.email">
+                                    <span class="cic" style="background:#714B67;">@</span>
+                                    <span class="grow"><span style="font-size:16px;font-weight:600;">E-Mail</span><span style="font-size:13.5px;color:#9b96a3;" t-esc="state.task.contact.email"/></span>
+                                </a>
+                                <button class="o_fsm_ghost" t-on-click="closeContact">Schließen</button>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-if="state.fotoOpen">
+                        <div class="o_fsm_overlay" t-on-click="closeFoto">
+                            <div class="o_fsm_sheet" t-on-click.stop="stop">
+                                <div class="o_fsm_grip"/>
+                                <h2>Foto hinzufügen</h2>
+                                <p class="ssub"><t t-esc="state.task.photoCount"/> von 3 angehängt</p>
+                                <div t-if="state.previews.length" class="o_fsm_photos">
+                                    <t t-foreach="state.previews" t-as="src" t-key="src_index">
+                                        <div class="ph"><img t-att-src="src"/></div>
+                                    </t>
+                                </div>
+                                <button class="o_fsm_primary" t-att-disabled="photosFull" t-on-click="pickPhoto">
+                                    <t t-esc="photosFull ? 'Maximum erreicht (3)' : '📷 Foto aufnehmen'"/>
+                                </button>
+                                <button class="o_fsm_ghost" t-on-click="closeFoto">Fertig</button>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-if="state.confirmOpen">
+                        <div class="o_fsm_overlay" style="z-index:30;" t-on-click="closeConfirm">
+                            <div class="o_fsm_sheet" t-on-click.stop="stop">
+                                <div class="o_fsm_grip"/>
+                                <h2>Aufgabe erledigt?</h2>
+                                <p class="ssub" t-esc="state.task.customer.name"/>
+                                <div class="o_fsm_confirm">
+                                    <span style="font-size:14px;color:#6b6770;font-weight:600;">Erfasste Zeit</span>
+                                    <span style="font-size:18px;font-weight:700;"><t t-esc="loggedTime"/> h <t t-if="state.overridden"><small style="font-size:12px;color:#9b96a3;">(angepasst)</small></t></span>
+                                </div>
+                                <p t-if="state.error" class="o_fsm_err" t-esc="state.error"/>
+                                <button class="o_fsm_primary" t-att-disabled="state.submitting" t-on-click="confirmDone">
+                                    <t t-esc="state.submitting ? 'Wird gesendet…' : 'Bestätigen'"/>
+                                </button>
+                                <button class="o_fsm_ghost" t-att-disabled="state.submitting" t-on-click="closeConfirm">Abbrechen</button>
+                            </div>
+                        </div>
+                    </t>
+
+                    <t t-if="state.done">
+                        <div class="o_fsm_success">
+                            <div class="circle">
+                                <svg width="48" height="48" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.3L19 7" fill="none" stroke="#1f8a51" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <h2>Erledigt ✓</h2>
+                            <p style="color:#6b6770;">Zeit erfasst: <strong><t t-esc="loggedTime"/> h</strong></p>
+                            <button class="o_fsm_primary" style="max-width:280px;" t-on-click="finish">Fertig</button>
+                        </div>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
