@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_igm_objektleiter_app" model="ir.actions.client">
+        <field name="name">Objektleiter Planung</field>
+        <field name="tag">igm_objektleiter_app</field>
+    </record>
+
+    <menuitem id="menu_igm_objektleiter_app_root"
+        name="Objektleiter"
+        action="action_igm_objektleiter_app"
+        web_icon="igm_objektleiter_app,static/description/icon.png"
+        sequence="5"/>
+</odoo>

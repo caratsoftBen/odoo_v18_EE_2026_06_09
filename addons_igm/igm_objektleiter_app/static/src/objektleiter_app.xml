@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="igm_objektleiter_app.ObjektleiterApp">
+        <div class="o_ol_app">
+            <div class="o_ol_main">
+                <div class="o_ol_head">
+                    <div>
+                        <div class="eyebrow">Objektleiter</div>
+                        <h1>Planung · nächste 7 Tage</h1>
+                    </div>
+                    <button class="o_ol_reload" t-att-disabled="state.busy" t-on-click="() => this.load()" title="Aktualisieren">↻</button>
+                </div>
+
+                <p t-if="state.error" class="o_ol_err" t-esc="state.error"/>
+
+                <t t-if="state.loading">
+                    <div class="o_ol_state">Lädt…</div>
+                </t>
+                <t t-elif="!state.sites.length">
+                    <div class="o_ol_state">Keine Reinigungsobjekte für dich hinterlegt.</div>
+                </t>
+                <t t-else="">
+                    <div class="o_ol_sites">
+                        <t t-foreach="state.sites" t-as="site" t-key="site.id">
+                            <div class="o_ol_site">
+                                <div class="o_ol_site_hd" t-on-click="() => this.toggle(site.id)">
+                                    <span class="caret" t-esc="state.expanded[site.id] ? '▾' : '▸'"/>
+                                    <span class="grow">
+                                        <span class="nm" t-esc="site.name"/>
+                                        <span class="addr" t-esc="site.address"/>
+                                    </span>
+                                    <span class="cnt" t-esc="site.taskCount"/>
+                                </div>
+
+                                <t t-if="state.expanded[site.id]">
+                                    <div class="o_ol_tasks">
+                                        <t t-if="!site.tasks.length">
+                                            <div class="o_ol_empty">Keine Aufgaben in den nächsten 7 Tagen.</div>
+                                        </t>
+                                        <t t-foreach="site.tasks" t-as="task" t-key="task.id">
+                                            <div class="o_ol_task"
+                                                t-att-class="{ done: task.done, dropready: state.dragEmpId and !task.done }"
+                                                t-on-dragover="(ev) => this.onDragOver(ev)"
+                                                t-on-drop="(ev) => this.onDrop(task, ev)">
+                                                <div class="o_ol_task_main">
+                                                    <div class="when">
+                                                        <t t-esc="taskWhen(task)"/>
+                                                        <span t-if="task.recurring" class="rec" title="Serie">↻</span>
+                                                    </div>
+                                                    <div class="ttl" t-esc="task.title"/>
+                                                </div>
+                                                <div class="o_ol_task_side">
+                                                    <span class="dur"><t t-esc="hhmm(task.allocatedHours)"/> h</span>
+                                                    <div class="asg">
+                                                        <t t-if="task.assignees.length">
+                                                            <t t-foreach="task.assignees" t-as="a" t-key="a.userId">
+                                                                <span class="av" t-esc="a.initials" t-att-title="a.name"/>
+                                                            </t>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="none">nicht zugewiesen</span>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </div>
+
+            <aside class="o_ol_side">
+                <div class="o_ol_side_hd">Mitarbeiter</div>
+                <p class="o_ol_side_hint">Auf eine Aufgabe ziehen, um zuzuweisen.</p>
+                <div class="o_ol_emps">
+                    <t t-if="!state.employees.length">
+                        <div class="o_ol_empty">Kein Team zugeordnet.</div>
+                    </t>
+                    <t t-foreach="state.employees" t-as="emp" t-key="emp.id">
+                        <div class="o_ol_emp" draggable="true"
+                            t-on-dragstart="(ev) => this.onDragStart(emp, ev)"
+                            t-on-dragend="() => this.onDragEnd()">
+                            <span class="av" t-esc="emp.initials"/>
+                            <span class="nm" t-esc="emp.name"/>
+                        </div>
+                    </t>
+                </div>
+            </aside>
+
+            <t t-if="state.modal">
+                <div class="o_ol_overlay" t-on-click="() => this.closeModal()">
+                    <div class="o_ol_dialog" t-on-click.stop="() => this.stop()">
+                        <h2>Zuweisen</h2>
+                        <p class="sub"><strong t-esc="state.modal.empName"/> → <t t-esc="state.modal.taskTitle"/></p>
+
+                        <label class="o_ol_opt">
+                            <input type="radio" name="olact" value="assign_additional" t-model="state.modal.choice"/>
+                            <span><strong>Zusätzlich zuweisen</strong><small>Weiterer Mitarbeiter auf dieser Aufgabe</small></span>
+                        </label>
+                        <label class="o_ol_opt">
+                            <input type="radio" name="olact" value="substitute_once" t-model="state.modal.choice"/>
+                            <span><strong>Einmalig ersetzen</strong><small>Zugewiesene(n) durch diesen Mitarbeiter tauschen</small></span>
+                        </label>
+                        <label class="o_ol_opt" t-if="state.modal.isRecurring">
+                            <input type="radio" name="olact" value="substitute_series" t-model="state.modal.choice"/>
+                            <span><strong>Ganze Serie ersetzen</strong><small>Für alle offenen Termine dieser Serie</small></span>
+                        </label>
+
+                        <div class="o_ol_dialog_btns">
+                            <button class="ghost" t-att-disabled="state.busy" t-on-click="() => this.closeModal()">Abbrechen</button>
+                            <button class="primary" t-att-disabled="!state.modal.choice or state.busy" t-on-click="() => this.applyModal()">
+                                <t t-esc="state.busy ? 'Wird gespeichert…' : 'Übernehmen'"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

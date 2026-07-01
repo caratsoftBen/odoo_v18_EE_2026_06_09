@@ -75,8 +75,18 @@
   `& .venv\Scripts\python.exe odoo-bin -c odoo_local.conf -d odoo_v18_2026_06_11_skr03 -i your_module --test-enable --stop-after-init`
 - Scaffold a module skeleton:
   `& .venv\Scripts\python.exe odoo-bin scaffold your_module addons_igm`
-- Make a new module appear in **Apps**: click **Update Apps List** (and set `'application': True`
-  for it to show as an app tile).
+- **Auto-apply verified modules (don't wait for the UI).** Once a new/changed custom module
+  passes local checks (Python `py_compile` **and** XML parses clean), load it into the DB via CLI
+  automatically — do **not** make the operator run **Apps → Update Apps List** by hand:
+  - first-time install: `-i <module>` (this is what registers a brand-new module + its app tile;
+    a `-u` on a not-yet-installed module is a no-op).
+  - subsequent code/view/asset/data changes: `-u <module>` (upgrades in place).
+  - always add `--stop-after-init`; set `'application': True` for the tile to appear.
+  - The DB is single-writer while the **VSCode debugger holds it**, so this needs the debug
+    session **stopped first**. Ask the user to stop it (or confirm it's stopped), run the
+    `-i`/`-u` command, report the result, then the user restarts the debugger.
+  - Example (first install):
+    `& .venv\Scripts\python.exe odoo-bin -c odoo_local.conf -d odoo_v18_2026_06_11_skr03 -i your_module --stop-after-init`
 - After code changes: **restart the VSCode debug session** (autoreload is off unless `watchdog`
   is installed).
 - Module/prefix renames: prefer **files + SQL rename-in-place** (`ALTER … RENAME COLUMN`, `UPDATE`

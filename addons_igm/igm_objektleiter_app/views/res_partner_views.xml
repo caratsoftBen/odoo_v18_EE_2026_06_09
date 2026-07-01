@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_igm_cleaning_site" model="ir.ui.view">
+        <field name="name">res.partner.form.igm.cleaning.site</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Reinigung" name="igm_cleaning">
+                    <group>
+                        <group>
+                            <field name="igm_is_cleaning_site"/>
+                            <field name="igm_coordinator_id"
+                                invisible="not igm_is_cleaning_site"
+                                options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter_igm_cleaning" model="ir.ui.view">
+        <field name="name">res.partner.select.igm.cleaning</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="igm_cleaning_sites" string="Reinigungsobjekte"
+                    domain="[('igm_is_cleaning_site', '=', True)]"/>
+                <group expand="0" string="Gruppieren nach">
+                    <filter name="group_igm_coordinator" string="Objektleiter"
+                        context="{'group_by': 'igm_coordinator_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
