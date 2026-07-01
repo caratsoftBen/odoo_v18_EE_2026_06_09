@@ -60,8 +60,20 @@ class ProjectTask(models.Model):
 
     def _igm_api_fsm_contact(self):
         self.ensure_one()
-        # TODO: resolve the Ansprechpartner from master data (e.g. a child contact of partner_id)
-        return None
+        partner = self.partner_id
+        if not partner:
+            return None
+        contact = partner
+        if partner.is_company:
+            child = partner.child_ids.filtered(lambda p: p.type == 'contact' and p.name)[:1]
+            contact = child or partner
+        return {
+            'name': contact.name or '',
+            'role': contact.function or '',
+            'phone': contact.phone or partner.phone or None,
+            'mobile': contact.mobile or partner.mobile or None,
+            'email': contact.email or partner.email or None,
+        }
 
     def _igm_api_fsm_note(self):
         self.ensure_one()
