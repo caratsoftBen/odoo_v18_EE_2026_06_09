@@ -42,7 +42,6 @@ export class FsmApp extends Component {
             submitting: false,
             completed: false,
             done: false,
-            previews: [],
         });
         onWillStart(() => this.load());
     }
@@ -74,13 +73,13 @@ export class FsmApp extends Component {
     get adjLabel() { return String(this.state.adjH).padStart(2, "0") + ":" + String(this.state.adjM).padStart(2, "0"); }
     get planned() { return plannedWindow(this.state.task.plannedStart, this.state.task.plannedEnd); }
     get allocatedLabel() { return hhmm(this.state.task ? this.state.task.allocatedHours || 0 : 0); }
-    get photosFull() { return (this.state.task ? this.state.task.photoCount || 0 : 0) >= 3; }
 
     initials(name) {
         return (name || "").trim().split(/\s+/).slice(0, 2).map((w) => (w[0] || "").toUpperCase()).join("");
     }
     mapsUrl(addr) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addr || ""); }
     wa(phone) { return (phone || "").replace(/\D/g, ""); }
+    photoSrc(id) { return "/web/image/" + id + "?width=240&height=240"; }
 
     get reasonValid() { return !!this.state.reason.trim(); }
     openAdjust() {
@@ -133,13 +132,19 @@ export class FsmApp extends Component {
         if (!file) {
             return;
         }
+        if (file.size > 20 * 1024 * 1024) {
+            this.state.error = "Das Foto ist zu groß (max. 20 MB).";
+            return;
+        }
         const reader = new FileReader();
         reader.onload = async () => {
             const dataUrl = String(reader.result);
-            this.state.previews.push(dataUrl);
             try {
-                await this.orm.call("project.task", "igm_api_fsm_add_photo", [[this.state.task.id], dataUrl]);
-                this.state.task.photoCount += 1;
+                const attId = await this.orm.call("project.task", "igm_api_fsm_add_photo", [[this.state.task.id], dataUrl]);
+                if (attId) {
+                    this.state.task.photos.push(attId);
+                    this.state.task.photoCount = this.state.task.photos.length;
+                }
             } catch (e) {
                 this.state.error = (e && e.message) || String(e);
             }

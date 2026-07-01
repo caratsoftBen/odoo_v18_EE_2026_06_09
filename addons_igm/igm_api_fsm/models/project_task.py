@@ -1,6 +1,7 @@
 import base64
 
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from odoo.tools import html2plaintext
 
 
@@ -44,6 +45,7 @@ class ProjectTask(models.Model):
                 'plannedEnd': task.date_deadline.isoformat() if task.date_deadline else None,
                 'allocatedHours': task.allocated_hours or 0.0,
                 'note': task._igm_api_fsm_note(),
+                'photos': task._igm_api_fsm_photo_ids(),
                 'photoCount': task._igm_api_fsm_photo_count(),
             })
         return result
@@ -84,11 +86,15 @@ class ProjectTask(models.Model):
 
     def _igm_api_fsm_photo_count(self):
         self.ensure_one()
-        return self.env['ir.attachment'].search_count([
+        return len(self._igm_api_fsm_photo_ids())
+
+    def _igm_api_fsm_photo_ids(self):
+        self.ensure_one()
+        return self.env['ir.attachment'].search([
             ('res_model', '=', 'project.task'),
             ('res_id', '=', self.id),
             ('mimetype', '=like', 'image/%'),
-        ])
+        ], order='id').ids
 
     def igm_api_fsm_mark_done(self, worked_hours=None, reason=None):
         self.ensure_one()
@@ -113,11 +119,15 @@ class ProjectTask(models.Model):
     def igm_api_fsm_add_photo(self, image_base64, note=None):
         self.ensure_one()
         image_data = (image_base64 or '').split(',')[-1]
-        self.message_post(
+        raw = base64.b64decode(image_data)
+        if len(raw) > 20 * 1024 * 1024:
+            raise UserError(_("Das Foto ist zu groß (max. 20 MB)."))
+        message = self.message_post(
             body=note or _("Foto"),
-            attachments=[('foto.jpg', base64.b64decode(image_data))],
+            attachments=[('foto.jpg', raw)],
         )
-        return True
+        attachment = message.attachment_ids[:1]
+        return attachment.id if attachment else False
 
     def _igm_api_fsm_supervisor_partner(self):
         self.ensure_one()

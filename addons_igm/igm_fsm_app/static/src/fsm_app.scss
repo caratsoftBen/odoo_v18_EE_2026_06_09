@@ -63,8 +63,8 @@
     .o_fsm_stepval { flex: 1; text-align: center; .v { font-size: 34px; font-weight: 700; } .s { font-size: 12px; color: #9b96a3; } }
     .o_fsm_reset { display: block; margin: 4px auto 12px; min-height: 44px; border: none; background: transparent; color: var(--p); font-weight: 600; cursor: pointer; }
     .o_fsm_note { margin: 0; font-size: 15px; line-height: 1.5; color: #46434b; }
-    .o_fsm_photos { display: flex; gap: 10px; margin-bottom: 14px;
-        .ph { flex: 1; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #efedf2; img { width: 100%; height: 100%; object-fit: cover; } }
+    .o_fsm_photos { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+        .ph { width: 72px; height: 72px; flex: 0 0 auto; border-radius: 12px; overflow: hidden; background: #efedf2; img { width: 100%; height: 100%; object-fit: cover; } }
     }
     .o_fsm_outline { width: 100%; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1.5px solid #e3e0e8; background: #faf9fb; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; font: inherit; color: #1f1d1f; }
 
@@ -75,11 +75,12 @@
     }
 
     .o_fsm_overlay { position: absolute; inset: 0; background: rgba(20,15,30,.42); display: flex; flex-direction: column; justify-content: flex-end; z-index: 20; }
-    .o_fsm_sheet { background: #fff; border-radius: 26px 26px 0 0; padding: 10px 18px 22px;
+    .o_fsm_sheet { position: relative; background: #fff; border-radius: 26px 26px 0 0; padding: 10px 18px 22px;
         h2 { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
         .ssub { margin: 0 0 16px; font-size: 15px; color: #6b6770; }
     }
     .o_fsm_grip { width: 38px; height: 4px; border-radius: 99px; background: #e0dde4; margin: 0 auto 16px; }
+    .o_fsm_sheet_close { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: none; background: #f3f1f5; color: #6b6770; font-size: 17px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .o_fsm_confirm { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: #faf9fb; border: 1px solid #f1eff3; border-radius: 14px; }
     .o_fsm_primary { width: 100%; min-height: 56px; margin-top: 14px; border: none; border-radius: 16px; background: var(--p); color: #fff; font-size: 17px; font-weight: 700; cursor: pointer; font: inherit;
         &:disabled { opacity: .6; }

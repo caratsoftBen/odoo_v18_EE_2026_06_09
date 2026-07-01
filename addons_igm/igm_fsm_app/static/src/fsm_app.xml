@@ -91,11 +91,11 @@
                         <div class="o_fsm_card">
                             <div class="o_fsm_row" style="padding:0;margin-bottom:14px;">
                                 <span class="o_fsm_label" style="margin-bottom:0;">Fotos</span>
-                                <span style="font-size:12px;color:#9b96a3;"><t t-esc="state.task.photoCount"/>/3</span>
+                                <span style="font-size:12px;color:#9b96a3;"><t t-esc="state.task.photoCount"/></span>
                             </div>
-                            <div t-if="state.previews.length" class="o_fsm_photos">
-                                <t t-foreach="state.previews" t-as="src" t-key="src_index">
-                                    <div class="ph"><img t-att-src="src"/></div>
+                            <div t-if="state.task.photos.length" class="o_fsm_photos">
+                                <t t-foreach="state.task.photos" t-as="pid" t-key="pid">
+                                    <div class="ph"><img t-att-src="photoSrc(pid)"/></div>
                                 </t>
                             </div>
                             <button class="o_fsm_outline" t-on-click="openFoto">📷 Foto hinzufügen</button>
@@ -143,16 +143,15 @@
                         <div class="o_fsm_overlay" t-on-click="closeFoto">
                             <div class="o_fsm_sheet" t-on-click.stop="stop">
                                 <div class="o_fsm_grip"/>
+                                <button class="o_fsm_sheet_close" t-on-click="closeFoto" title="Schließen">✕</button>
                                 <h2>Foto hinzufügen</h2>
-                                <p class="ssub"><t t-esc="state.task.photoCount"/> von 3 angehängt</p>
-                                <div t-if="state.previews.length" class="o_fsm_photos">
-                                    <t t-foreach="state.previews" t-as="src" t-key="src_index">
-                                        <div class="ph"><img t-att-src="src"/></div>
+                                <p class="ssub"><t t-esc="state.task.photoCount"/> angehängt</p>
+                                <div t-if="state.task.photos.length" class="o_fsm_photos">
+                                    <t t-foreach="state.task.photos" t-as="pid" t-key="pid">
+                                        <div class="ph"><img t-att-src="photoSrc(pid)"/></div>
                                     </t>
                                 </div>
-                                <button class="o_fsm_primary" t-att-disabled="photosFull" t-on-click="pickPhoto">
-                                    <t t-esc="photosFull ? 'Maximum erreicht (3)' : '📷 Foto aufnehmen'"/>
-                                </button>
+                                <button class="o_fsm_primary" t-on-click="pickPhoto">📷 Foto aufnehmen</button>
                                 <button class="o_fsm_ghost" t-on-click="closeFoto">Fertig</button>
                             </div>
                         </div>
