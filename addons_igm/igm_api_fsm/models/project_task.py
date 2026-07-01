@@ -90,8 +90,10 @@ class ProjectTask(models.Model):
             ('mimetype', '=like', 'image/%'),
         ])
 
-    def igm_api_fsm_mark_done(self, worked_hours=None):
+    def igm_api_fsm_mark_done(self, worked_hours=None, reason=None):
         self.ensure_one()
+        if worked_hours is not None and reason:
+            self._igm_api_fsm_log_time_reason(worked_hours, reason)
         if worked_hours is None:
             self.action_igm_cleaner_done()
             return True
@@ -116,3 +118,21 @@ class ProjectTask(models.Model):
             attachments=[('foto.jpg', base64.b64decode(image_data))],
         )
         return True
+
+    def _igm_api_fsm_supervisor_partner(self):
+        self.ensure_one()
+        employee = self.env.user.employee_id
+        if employee and employee.parent_id and employee.parent_id.user_id:
+            return employee.parent_id.user_id.partner_id
+        admin = self.env.ref('base.user_admin', raise_if_not_found=False)
+        return admin.partner_id if admin else self.env['res.partner']
+
+    def _igm_api_fsm_log_time_reason(self, worked_hours, reason):
+        self.ensure_one()
+        supervisor = self._igm_api_fsm_supervisor_partner()
+        hours = int(worked_hours)
+        minutes = int(round((worked_hours - hours) * 60))
+        body = _(
+            "Zugewiesene Zeit angepasst auf %(h)02d:%(m)02d h.\nBegründung: %(reason)s"
+        ) % {'h': hours, 'm': minutes, 'reason': reason}
+        self.message_post(body=body, partner_ids=supervisor.ids)

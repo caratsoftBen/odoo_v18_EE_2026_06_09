@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_igm_fsm_app" model="ir.actions.client">
-        <field name="name">Simulation ReinigungsAppfield>
+        <field name="name">Simulation ReinigungsApp</field>
         <field name="tag">igm_fsm_app</field>
     </record>
 

@@ -31,6 +31,8 @@ export class FsmApp extends Component {
             error: null,
             task: null,
             adjustOpen: false,
+            reasonOpen: false,
+            reason: "",
             overridden: false,
             adjH: 0,
             adjM: 0,
@@ -80,7 +82,21 @@ export class FsmApp extends Component {
     mapsUrl(addr) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addr || ""); }
     wa(phone) { return (phone || "").replace(/\D/g, ""); }
 
-    toggleAdjust() { this.state.adjustOpen = !this.state.adjustOpen; }
+    get reasonValid() { return !!this.state.reason.trim(); }
+    openAdjust() {
+        if (this.state.reasonOpen || this.state.adjustOpen) {
+            this.state.reasonOpen = false;
+            this.state.adjustOpen = false;
+        } else {
+            this.state.reasonOpen = true;
+        }
+    }
+    confirmReason() {
+        if (this.reasonValid) {
+            this.state.reasonOpen = false;
+            this.state.adjustOpen = true;
+        }
+    }
     openContact() { this.state.contactOpen = true; }
     closeContact() { this.state.contactOpen = false; }
     openFoto() { this.state.fotoOpen = true; }
@@ -135,7 +151,9 @@ export class FsmApp extends Component {
         this.state.submitting = true;
         this.state.error = null;
         try {
-            const kwargs = this.state.overridden ? { worked_hours: this.loggedHours } : {};
+            const kwargs = this.state.overridden
+                ? { worked_hours: this.loggedHours, reason: this.state.reason }
+                : {};
             await this.orm.call("project.task", "igm_api_fsm_mark_done", [[this.state.task.id]], kwargs);
             this.state.confirmOpen = false;
             this.state.completed = true;

@@ -29,9 +29,13 @@
 
                         <div class="o_fsm_card">
                             <div class="o_fsm_label">Kunde</div>
-                            <div style="font-size:17px;font-weight:600;margin-bottom:3px;" t-esc="state.task.customer.name"/>
-                            <div style="font-size:14.5px;color:#6b6770;line-height:1.4;" t-esc="state.task.customer.address"/>
-                            <a class="o_fsm_link" t-att-href="mapsUrl(state.task.customer.address)" target="_blank">Route öffnen <span>→</span></a>
+                            <div style="font-size:17px;font-weight:600;margin-bottom:8px;" t-esc="state.task.customer.name"/>
+                            <div class="o_fsm_addr_row">
+                                <a class="o_fsm_mappin" t-att-href="mapsUrl(state.task.customer.address)" target="_blank" title="Route">
+                                    <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z" fill="#EA4335"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></svg>
+                                </a>
+                                <div style="font-size:14.5px;color:#6b6770;line-height:1.4;" t-esc="state.task.customer.address"/>
+                            </div>
                             <button t-if="state.task.contact" class="o_fsm_contact" t-on-click="openContact">
                                 <span class="o_fsm_avatar" t-esc="initials(state.task.contact.name)"/>
                                 <span class="grow">
@@ -50,14 +54,22 @@
                                 </div>
                                 <span class="o_fsm_readonly">nur lesen</span>
                             </div>
-                            <div class="o_fsm_row">
+                            <div class="o_fsm_row" style="border-bottom:none;">
                                 <div class="o_fsm_label" style="margin-bottom:0;">Zugewiesene Zeit</div>
-                                <div class="o_fsm_bigtime"><t t-esc="loggedTime"/> <small>h</small></div>
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div class="o_fsm_bigtime"><t t-esc="loggedTime"/> <small>h</small></div>
+                                    <button class="o_fsm_editicon" t-att-class="{ active: state.adjustOpen }" t-on-click="openAdjust" title="Zeit anpassen">
+                                        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 16.5V20h3.5L18 9.5 14.5 6 4 16.5z M16.7 4.8l1.4-1.4a1.2 1.2 0 0 1 1.7 0l1.8 1.8a1.2 1.2 0 0 1 0 1.7l-1.4 1.4-3.5-3.5z" fill="currentColor"/></svg>
+                                    </button>
+                                </div>
                             </div>
-                            <button class="o_fsm_adjust" t-on-click="toggleAdjust">
-                                <span class="l"><span class="ic"><t t-esc="state.adjustOpen ? '–' : '+'"/></span>Zeit anpassen</span>
-                                <span class="hint" t-esc="state.adjustOpen ? 'schließen' : (state.overridden ? 'angepasst' : 'Standard ' + allocatedLabel)"/>
-                            </button>
+                            <t t-if="state.reasonOpen">
+                                <div class="o_fsm_reason">
+                                    <div class="o_fsm_label" style="margin-bottom:6px;">Begründung (geht an den Vorgesetzten)</div>
+                                    <textarea class="o_fsm_reason_in" t-model="state.reason" placeholder="Warum weicht die Zeit vom Standard ab?"/>
+                                    <button class="o_fsm_primary" t-att-disabled="!reasonValid" t-on-click="confirmReason">Weiter</button>
+                                </div>
+                            </t>
                             <t t-if="state.adjustOpen">
                                 <div class="o_fsm_stepper">
                                     <button class="o_fsm_step" t-on-click="decTime">–</button>
