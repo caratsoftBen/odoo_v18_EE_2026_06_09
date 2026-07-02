@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="igm_fsm_task_form_due_date" model="ir.ui.view">
+        <field name="name">igm.fsm.task.form.due.date</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">
+                <field name="igm_due_date" invisible="not is_fsm"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="igm_fsm_task_form_cleaner" model="ir.ui.view">
         <field name="name">igm.fsm.task.form.cleaner</field>
         <field name="model">project.task</field>

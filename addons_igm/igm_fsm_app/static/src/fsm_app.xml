@@ -21,9 +21,9 @@
                     </div>
 
                     <div class="o_fsm_scroll">
-                        <span class="o_fsm_chip" t-att-class="{ done: state.completed }">
+                        <span class="o_fsm_chip" t-att-class="{ done: state.completed, flex: !state.completed and isFlexible }">
                             <span class="dot"/>
-                            <t t-esc="state.completed ? 'Erledigt' : 'Geplant'"/>
+                            <t t-esc="statusChip"/>
                         </span>
                         <h1 class="o_fsm_title" t-esc="state.task.title"/>
 
@@ -48,11 +48,20 @@
 
                         <div class="o_fsm_card tight">
                             <div class="o_fsm_row bb">
-                                <div>
-                                    <div class="o_fsm_label" style="margin-bottom:4px;">Geplant</div>
-                                    <div style="font-size:15.5px;" t-esc="planned"/>
-                                </div>
-                                <span class="o_fsm_readonly">nur lesen</span>
+                                <t t-if="isFlexible">
+                                    <div>
+                                        <div class="o_fsm_label" style="margin-bottom:4px;">Fällig bis</div>
+                                        <div style="font-size:15.5px;" t-esc="dueLabel"/>
+                                    </div>
+                                    <span class="o_fsm_flexbadge">Zeit frei wählbar</span>
+                                </t>
+                                <t t-else="">
+                                    <div>
+                                        <div class="o_fsm_label" style="margin-bottom:4px;">Geplant</div>
+                                        <div style="font-size:15.5px;" t-esc="planned"/>
+                                    </div>
+                                    <span class="o_fsm_readonly">nur lesen</span>
+                                </t>
                             </div>
                             <div class="o_fsm_row" style="border-bottom:none;">
                                 <div class="o_fsm_label" style="margin-bottom:0;">Zugewiesene Zeit</div>

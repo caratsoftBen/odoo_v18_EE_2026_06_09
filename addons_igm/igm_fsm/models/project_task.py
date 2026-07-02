@@ -4,6 +4,13 @@ from odoo import fields, models
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
+    igm_due_date = fields.Date(
+        string="Due Date",
+        tracking=True,
+        help="Latest day the task must be completed when no planned date is set. "
+             "The assignee chooses the exact time of fulfilment himself.",
+    )
+
     def _compute_display_sign_report_buttons(self):
         super()._compute_display_sign_report_buttons()
         if self.env.user.has_group('igm_fsm.group_fsm_cleaner'):

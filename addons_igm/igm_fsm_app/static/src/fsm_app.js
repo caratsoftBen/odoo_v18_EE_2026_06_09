@@ -19,6 +19,14 @@ function plannedWindow(startISO, endISO) {
     return endISO ? `${day}, ${t(start)} – ${t(new Date(endISO))}` : `${day}, ${t(start)}`;
 }
 
+function dueDay(dueISO) {
+    if (!dueISO) {
+        return "";
+    }
+    const d = new Date(dueISO + "T00:00:00");
+    return d.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 export class FsmApp extends Component {
     static template = "igm_fsm_app.FsmApp";
     static props = ["*"];
@@ -72,6 +80,17 @@ export class FsmApp extends Component {
     get loggedTime() { return hhmm(this.loggedHours); }
     get adjLabel() { return String(this.state.adjH).padStart(2, "0") + ":" + String(this.state.adjM).padStart(2, "0"); }
     get planned() { return plannedWindow(this.state.task.plannedStart, this.state.task.plannedEnd); }
+    get isFlexible() {
+        const task = this.state.task;
+        return !!(task && !task.plannedStart && task.dueDate);
+    }
+    get dueLabel() { return dueDay(this.state.task.dueDate); }
+    get statusChip() {
+        if (this.state.completed) {
+            return "Erledigt";
+        }
+        return this.isFlexible ? "Flexibel" : "Geplant";
+    }
     get allocatedLabel() { return hhmm(this.state.task ? this.state.task.allocatedHours || 0 : 0); }
 
     initials(name) {

@@ -28,6 +28,7 @@
 
     .o_fsm_chip { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; padding: 5px 12px; border-radius: 999px; color: var(--p); background: #f3eef2; font-size: 12.5px; font-weight: 700;
         &.done { color: #1f8a51; background: #e6f4ec; }
+        &.flex { color: #a06b00; background: #fdf3df; }
         .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
     }
     .o_fsm_title { margin: 0 0 16px; font-size: 23px; line-height: 1.25; font-weight: 700; }
@@ -52,6 +53,7 @@
         &.bb { border-bottom: 1px solid #f1eff3; }
     }
     .o_fsm_readonly { font-size: 11px; font-weight: 600; color: #9b96a3; background: #f3f1f5; padding: 5px 9px; border-radius: 8px; }
+    .o_fsm_flexbadge { font-size: 11px; font-weight: 600; color: #a06b00; background: #fdf3df; padding: 5px 9px; border-radius: 8px; white-space: nowrap; }
     .o_fsm_bigtime { font-size: 22px; font-weight: 700; small { font-size: 15px; color: #9b96a3; } }
     .o_fsm_adjust { width: 100%; display: flex; align-items: center; justify-content: space-between; min-height: 52px; border: none; border-top: 1px solid #f1eff3; background: transparent; cursor: pointer; font: inherit;
         .l { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; color: var(--p); }

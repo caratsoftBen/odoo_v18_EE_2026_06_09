@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime, time
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -16,9 +17,16 @@ class ProjectTask(models.Model):
                 ('is_fsm', '=', True),
                 ('fsm_done', '=', False),
             ],
-            order='planned_date_begin asc, id asc',
         )
-        return tasks.igm_fsm_api_read()
+        return tasks.sorted(key=lambda t: (t._igm_fsm_api_effective_date(), t.id)).igm_fsm_api_read()
+
+    def _igm_fsm_api_effective_date(self):
+        self.ensure_one()
+        if self.planned_date_begin:
+            return self.planned_date_begin
+        if self.igm_due_date:
+            return datetime.combine(self.igm_due_date, time.max)
+        return datetime.max
 
     def igm_fsm_api_read(self):
         result = []
@@ -43,6 +51,7 @@ class ProjectTask(models.Model):
                 'contact': task._igm_fsm_api_contact(),
                 'plannedStart': task.planned_date_begin.isoformat() if task.planned_date_begin else None,
                 'plannedEnd': task.date_deadline.isoformat() if task.date_deadline else None,
+                'dueDate': task.igm_due_date.isoformat() if task.igm_due_date else None,
                 'allocatedHours': task.allocated_hours or 0.0,
                 'note': task._igm_fsm_api_note(),
                 'photos': task._igm_fsm_api_photo_ids(),
