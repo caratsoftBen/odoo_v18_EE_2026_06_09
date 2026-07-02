@@ -97,7 +97,7 @@ export class ObjektleiterApp extends Component {
             taskTitle: task.title,
             empName: emp ? emp.name : "",
             isRecurring: task.recurring,
-            choice: "assign_additional",
+            choice: "substitute_once",
         };
     }
 

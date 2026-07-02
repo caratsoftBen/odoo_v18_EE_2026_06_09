@@ -97,16 +97,16 @@
                         <p class="sub"><strong t-esc="state.modal.empName"/> → <t t-esc="state.modal.taskTitle"/></p>
 
                         <label class="o_ol_opt">
-                            <input type="radio" name="olact" value="assign_additional" t-model="state.modal.choice"/>
-                            <span><strong>Zusätzlich zuweisen</strong><small>Weiterer Mitarbeiter auf dieser Aufgabe</small></span>
-                        </label>
-                        <label class="o_ol_opt">
                             <input type="radio" name="olact" value="substitute_once" t-model="state.modal.choice"/>
                             <span><strong>Einmalig ersetzen</strong><small>Zugewiesene(n) durch diesen Mitarbeiter tauschen</small></span>
                         </label>
                         <label class="o_ol_opt" t-if="state.modal.isRecurring">
                             <input type="radio" name="olact" value="substitute_series" t-model="state.modal.choice"/>
                             <span><strong>Ganze Serie ersetzen</strong><small>Für alle offenen Termine dieser Serie</small></span>
+                        </label>
+                        <label class="o_ol_opt o_ol_opt--compact">
+                            <input type="radio" name="olact" value="assign_additional" t-model="state.modal.choice"/>
+                            <span><strong>Zusätzlich zuweisen</strong><small>Weiterer Mitarbeiter auf dieser Aufgabe</small></span>
                         </label>
 
                         <div class="o_ol_dialog_btns">

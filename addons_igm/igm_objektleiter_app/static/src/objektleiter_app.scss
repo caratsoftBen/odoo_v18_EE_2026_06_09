@@ -66,6 +66,10 @@
         small { color: #9b96a3; font-size: 12.5px; }
         &:has(input:checked) { border-color: var(--p); background: #f6eff4; }
     }
+    .o_ol_opt--compact { padding: 7px 12px; align-items: center;
+        strong { font-size: 13px; font-weight: 600; }
+        small { font-size: 11px; }
+    }
     .o_ol_dialog_btns { display: flex; gap: 10px; margin-top: 14px;
         button { flex: 1; min-height: 46px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font: inherit; border: none; }
         .ghost { background: #f3f1f5; color: #6b6770; }
