@@ -63,7 +63,32 @@
 - Define groups and record rules in `security/security_rules.xml`.
 - `__manifest__.py` load order: **security files load before view XMLs**.
 
-### E. Scheduled Actions / Crons
+### E. New Apps / Modules — Start From What Already Exists
+- **Copy the local pattern first.** Before scaffolding a new app, read a comparable module already
+  in `addons_igm/` and mirror its layout, manifest shape, and naming — do not invent structure from
+  scratch. Good references by shape:
+  - full business app (models + views + security + data): `igm_fsm/`, `igm_task_forecast/`
+  - OWL/JS frontend or PWA-style app (`static/src`, assets bundle): `igm_fsm_app/`,
+    `igm_objektleiter_app/`
+  - JSON/REST controllers for an external client: `igm_api_fsm/controllers/`
+  - dashboard / employee-facing views: `igm_employee_dashboard/`
+  - report / layout customization: `igm_footer/report/`
+  - seed data + payroll-style config: `igm_de_minijob_payroll/data/`
+- **Standard folder layout** (only the folders a module actually needs):
+  `models/`, `views/`, `security/` (`ir.model.access.csv` + `security_rules.xml`), `data/`,
+  `report/`, `controllers/`, `static/description/` (icon + index), `static/src/` (JS/CSS/OWL).
+  Keep `models/__init__.py` and the package `__init__.py` importing submodules, exactly as the
+  existing modules do.
+- **Follow OCA community guidelines** for anything not covered locally: one model per file named
+  after the model (`igm_<name>.py`), manifest keys in the conventional order
+  (`name`, `version`, `summary`, `category`, `author`, `website`, `license`, `depends`, `data`,
+  `assets`), semantic module `version` (`18.0.x.y.z`), explicit `license` (`LGPL-3`), views/data
+  files grouped by type under `data`, and PEP 8 / Odoo linting. When our local convention and OCA
+  disagree, the **rules in this file win** (e.g. `igm_` prefix, `[IGM]` admin tagging, IGM icon).
+- Still obey the app rules above: `igm_` prefix (§B), ACL + record rules for every new model
+  (§D above), the IGM app icon (§B), and `'application': True` so the tile appears.
+
+### F. Scheduled Actions / Crons
 - Declare `ir.cron` as XML data inside `<data noupdate="1">` so the schedule — tuned in the standard
   **Settings → Technical → Scheduled Actions** UI — survives module upgrades.
 - Split config surfaces: behaviour that has no standard UI → a `res.config.settings` section;
