@@ -10,14 +10,17 @@ function hhmm(hours) {
     return String(Math.floor(total / 60)).padStart(2, "0") + ":" + String(total % 60).padStart(2, "0");
 }
 
-function taskWhen(startISO, endISO) {
+function taskTime(startISO, endISO) {
     if (!startISO) {
         return "Ungeplant";
     }
-    const start = new Date(startISO);
-    const day = start.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" });
     const t = (d) => d.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-    return endISO ? `${day} · ${t(start)}–${t(new Date(endISO))}` : `${day} · ${t(start)}`;
+    const start = new Date(startISO);
+    return endISO ? `${t(start)}–${t(new Date(endISO))}` : t(start);
+}
+
+function dayKey(d) {
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
 }
 
 export class ObjektleiterApp extends Component {
@@ -58,7 +61,35 @@ export class ObjektleiterApp extends Component {
     }
 
     hhmm(h) { return hhmm(h); }
-    taskWhen(task) { return taskWhen(task.plannedStart, task.plannedEnd); }
+    taskTime(task) { return taskTime(task.plannedStart, task.plannedEnd); }
+
+    siteDays(site) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const days = [];
+        const byKey = {};
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+            const day = {
+                key: dayKey(d),
+                label: d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" }),
+                isToday: i === 0,
+                tasks: [],
+            };
+            days.push(day);
+            byKey[day.key] = day;
+        }
+        for (const task of site.tasks) {
+            if (!task.plannedStart) {
+                continue;
+            }
+            const start = new Date(task.plannedStart);
+            const day = byKey[dayKey(start)] || (start < today ? days[0] : days[days.length - 1]);
+            day.tasks.push(task);
+        }
+        return days;
+    }
 
     toggle(siteId) {
         this.state.expanded[siteId] = !this.state.expanded[siteId];

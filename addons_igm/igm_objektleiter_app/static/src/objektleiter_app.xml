@@ -34,34 +34,39 @@
                                 </div>
 
                                 <t t-if="state.expanded[site.id]">
-                                    <div class="o_ol_tasks">
-                                        <t t-if="!site.tasks.length">
-                                            <div class="o_ol_empty">Keine Aufgaben in den nächsten 7 Tagen.</div>
-                                        </t>
-                                        <t t-foreach="site.tasks" t-as="task" t-key="task.id">
-                                            <div class="o_ol_task"
-                                                t-att-class="{ done: task.done, dropready: state.dragEmpId and !task.done }"
-                                                t-on-dragover="(ev) => this.onDragOver(ev)"
-                                                t-on-drop="(ev) => this.onDrop(task, ev)">
-                                                <div class="o_ol_task_main">
-                                                    <div class="when">
-                                                        <t t-esc="taskWhen(task)"/>
-                                                        <span t-if="task.recurring" class="rec" title="Serie">↻</span>
-                                                    </div>
-                                                    <div class="ttl" t-esc="task.title"/>
-                                                </div>
-                                                <div class="o_ol_task_side">
-                                                    <span class="dur"><t t-esc="hhmm(task.allocatedHours)"/> h</span>
-                                                    <div class="asg">
-                                                        <t t-if="task.assignees.length">
-                                                            <t t-foreach="task.assignees" t-as="a" t-key="a.userId">
-                                                                <span class="av" t-esc="a.initials" t-att-title="a.name"/>
-                                                            </t>
-                                                        </t>
-                                                        <t t-else="">
-                                                            <span class="none">nicht zugewiesen</span>
-                                                        </t>
-                                                    </div>
+                                    <t t-if="!site.tasks.length">
+                                        <div class="o_ol_empty">Keine Aufgaben in den nächsten 7 Tagen.</div>
+                                    </t>
+                                    <div t-else="" class="o_ol_week">
+                                        <t t-foreach="siteDays(site)" t-as="day" t-key="day.key">
+                                            <div class="o_ol_day" t-att-class="{ today: day.isToday }">
+                                                <div class="o_ol_day_hd" t-esc="day.label"/>
+                                                <div class="o_ol_day_body">
+                                                    <t t-foreach="day.tasks" t-as="task" t-key="task.id">
+                                                        <div class="o_ol_task"
+                                                            t-att-class="{ done: task.done, dropready: state.dragEmpId and !task.done }"
+                                                            t-on-dragover="(ev) => this.onDragOver(ev)"
+                                                            t-on-drop="(ev) => this.onDrop(task, ev)">
+                                                            <div class="tm">
+                                                                <t t-esc="taskTime(task)"/>
+                                                                <span t-if="task.recurring" class="rec" title="Serie">↻</span>
+                                                            </div>
+                                                            <div class="ttl" t-att-title="task.title" t-esc="task.title"/>
+                                                            <div class="ft">
+                                                                <span class="dur"><t t-esc="hhmm(task.allocatedHours)"/> h</span>
+                                                                <div class="asg">
+                                                                    <t t-if="task.assignees.length">
+                                                                        <t t-foreach="task.assignees" t-as="a" t-key="a.userId">
+                                                                            <span class="av" t-esc="a.initials" t-att-title="a.name"/>
+                                                                        </t>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <span class="none">offen</span>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </t>
                                                 </div>
                                             </div>
                                         </t>
