@@ -33,7 +33,7 @@ class IgmFsmApiController(http.Controller):
                 pass
         return result
 
-    @http.route('/igm/api/fsm/tasks/mine', type='http', auth='user', methods=['GET', 'POST'], csrf=False, cors='*')
+    @http.route('/igm/fsm/api/tasks/mine', type='http', auth='user', methods=['GET', 'POST'], csrf=False, cors='*')
     def tasks_mine(self, **kw):
         try:
             tasks = request.env['project.task'].igm_fsm_api_get_my_tasks()
@@ -42,7 +42,7 @@ class IgmFsmApiController(http.Controller):
             _logger.exception("igm_fsm_api tasks/mine failed")
             return request.make_json_response({'status': 'error', 'message': str(e)}, status=500)
 
-    @http.route('/igm/api/fsm/task/done', type='http', auth='user', methods=['POST'], csrf=False, cors='*')
+    @http.route('/igm/fsm/api/task/done', type='http', auth='user', methods=['POST'], csrf=False, cors='*')
     def task_done(self, **kw):
         task_id = None
         try:
@@ -62,7 +62,7 @@ class IgmFsmApiController(http.Controller):
             _logger.exception("igm_fsm_api task/done failed")
             return request.make_json_response({'status': 'error', 'taskId': task_id, 'message': str(e)}, status=500)
 
-    @http.route('/igm/api/fsm/task/photo', type='http', auth='user', methods=['POST'], csrf=False, cors='*')
+    @http.route('/igm/fsm/api/task/photo', type='http', auth='user', methods=['POST'], csrf=False, cors='*')
     def task_photo(self, **kw):
         task_id = None
         try:

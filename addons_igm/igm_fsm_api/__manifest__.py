@@ -5,7 +5,7 @@
 HTTP/JSON API layer for Field Service tasks, consumed by the standalone igm-fsm-pwa app.
 
 Exposes the cleaner task-screen operations (list my open tasks, mark a task done with a
-timesheet entry, post a photo) as a small REST contract under /igm/api/fsm. The business
+timesheet entry, post a photo) as a small REST contract under /igm/fsm/api. The business
 logic lives as reusable methods on project.task, shared with the in-app GUI. Retries are
 de-duplicated through an idempotency store.
 """,
