@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="igm_kpis.KpiBadge">
+        <span t-if="props.kpi" class="igm_kpi_badge"
+            t-attf-class="st-{{ props.kpi.status or 'neutral' }}"
+            t-att-title="props.kpi.label">
+            <t t-if="(props.kpi.widget or 'donut') === 'donut'">
+                <svg class="donut" viewBox="0 0 36 36" aria-hidden="true">
+                    <circle class="bg" cx="18" cy="18" r="15.9155" fill="none" stroke-width="3.4"/>
+                    <circle class="fg" cx="18" cy="18" r="15.9155" fill="none" stroke-width="3.4"
+                        stroke-linecap="round"
+                        t-att-stroke-dasharray="(pct * 100).toFixed(1) + ' 100'"
+                        transform="rotate(-90 18 18)"/>
+                    <text class="val" x="18" y="18" text-anchor="middle" dominant-baseline="central" t-esc="text"/>
+                </svg>
+            </t>
+            <t t-else="">
+                <span class="txt" t-esc="text"/>
+            </t>
+        </span>
+    </t>
+</templates>

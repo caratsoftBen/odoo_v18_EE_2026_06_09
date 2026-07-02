@@ -1,0 +1,21 @@
+.igm_kpi_badge {
+    display: inline-flex;
+    align-items: center;
+
+    &.st-good { --igm-kpi: #2e8540; }
+    &.st-warn { --igm-kpi: #e6a817; }
+    &.st-bad { --igm-kpi: #c62828; }
+    &.st-neutral { --igm-kpi: #b5b0bc; }
+
+    .donut {
+        width: 42px;
+        height: 42px;
+        display: block;
+
+        .bg { stroke: #eceaef; }
+        .fg { stroke: var(--igm-kpi); transition: stroke-dasharray .25s ease; }
+        .val { font-size: 9px; font-weight: 700; fill: #1f1d1f; }
+    }
+
+    .txt { font-size: 13px; font-weight: 700; color: var(--igm-kpi); }
+}

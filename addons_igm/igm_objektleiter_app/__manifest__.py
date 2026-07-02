@@ -20,6 +20,7 @@ FSM planning stays the single source of truth.
     'license': 'LGPL-3',
     'depends': [
         'igm_fsm_api',
+        'igm_kpis',
         'hr',
         'web',
     ],

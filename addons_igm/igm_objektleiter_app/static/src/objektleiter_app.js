@@ -3,6 +3,7 @@
 import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { KpiBadge } from "@igm_kpis/kpi_badge";
 
 function hhmm(hours) {
     const total = Math.round((hours || 0) * 60);
@@ -21,6 +22,7 @@ function taskWhen(startISO, endISO) {
 
 export class ObjektleiterApp extends Component {
     static template = "igm_objektleiter_app.ObjektleiterApp";
+    static components = { KpiBadge };
     static props = ["*"];
 
     setup() {

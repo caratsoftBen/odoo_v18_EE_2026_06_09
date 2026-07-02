@@ -14,6 +14,11 @@ First metric: employee_remaining_hours_for_month(employee_id) — contractual mo
 minus already-logged timesheet hours minus still-outstanding planned task hours, i.e. how much
 working time is left before a contractual hours limit (e.g. Minijob 40 h/month) is breached.
 
+It also owns the visual side of KPIs: igm.kpi methods such as task_allocation() return a
+renderable payload (widget, value, unit, pct, status, label) and the OWL component KpiBadge
+renders it. The encoding (donut today, progress bar tomorrow) is decided here only — consuming
+apps place <KpiBadge kpi="..."/> and are never touched when the design changes.
+
 This is technical infrastructure (no app tile).
 """,
     'category': 'Technical',
@@ -24,10 +29,16 @@ This is technical infrastructure (no app tile).
         'hr_contract',
         'hr_timesheet',
         'project',
+        'web',
     ],
     'data': [
         'views/hr_contract_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'igm_kpis/static/src/**/*',
+        ],
+    },
     'installable': True,
     'application': False,
 }

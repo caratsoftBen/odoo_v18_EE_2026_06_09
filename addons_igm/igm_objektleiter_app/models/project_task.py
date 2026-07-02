@@ -33,6 +33,7 @@ class ProjectTask(models.Model):
         for task in tasks:
             tasks_by_site.setdefault(task.partner_id.id, self.browse())
             tasks_by_site[task.partner_id.id] |= task
+        kpi_service = self.env['igm.kpi']
         sites_dto = []
         for site in sites:
             site_tasks = tasks_by_site.get(site.id, self.browse())
@@ -41,6 +42,7 @@ class ProjectTask(models.Model):
                 'name': site.name or '',
                 'address': site._igm_ol_address(),
                 'taskCount': len(site_tasks),
+                'kpi': kpi_service.task_allocation(site_tasks.ids),
                 'tasks': [task._igm_ol_task_dto() for task in site_tasks],
             })
         return {

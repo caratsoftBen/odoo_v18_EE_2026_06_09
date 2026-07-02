@@ -29,6 +29,7 @@
                                         <span class="nm" t-esc="site.name"/>
                                         <span class="addr" t-esc="site.address"/>
                                     </span>
+                                    <KpiBadge kpi="site.kpi"/>
                                     <span class="cnt" t-esc="site.taskCount"/>
                                 </div>
 

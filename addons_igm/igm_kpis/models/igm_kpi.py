@@ -2,7 +2,7 @@ from datetime import datetime, time
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class IgmKpi(models.AbstractModel):
@@ -101,6 +101,45 @@ class IgmKpi(models.AbstractModel):
         worked = self.employee_worked_hours_for_month(employee, ref_date)
         planned = self.employee_planned_hours_for_month(employee, ref_date)
         return max_hours - worked - planned
+
+    @api.model
+    def task_allocation(self, task_ids):
+        """Assignment coverage over a set of tasks, as a renderable KPI payload.
+
+        ``value`` is the sum of allocated hours over all given tasks; ``pct`` is
+        the share of those hours belonging to tasks that have at least one
+        assignee; ``status`` is good/warn/bad (all / some / no tasks assigned)
+        or neutral when there are no tasks. ``widget`` names the visual encoding
+        the KpiBadge component should render — consumers pass the payload
+        through untouched, so changing the encoding is a change in this module
+        only.
+        """
+        tasks = self.env['project.task'].browse(task_ids).exists()
+        total = sum(tasks.mapped('allocated_hours'))
+        assigned = sum(task.allocated_hours for task in tasks if task.user_ids)
+        unassigned = tasks.filtered(lambda t: not t.user_ids)
+        if total:
+            pct = assigned / total
+        else:
+            pct = 0.0 if unassigned else 1.0
+        if not tasks:
+            status = 'neutral'
+            label = _("Keine Aufgaben im Zeitraum")
+        elif not unassigned:
+            status = 'good'
+            label = _("Alle %(total)s Aufgaben zugewiesen", total=len(tasks))
+        else:
+            status = 'bad' if len(unassigned) == len(tasks) else 'warn'
+            label = _("%(count)s von %(total)s Aufgaben ohne Zuweisung",
+                      count=len(unassigned), total=len(tasks))
+        return {
+            'widget': 'donut',
+            'value': total,
+            'unit': 'h',
+            'pct': pct,
+            'status': status,
+            'label': label,
+        }
 
     @api.model
     def employee_hours_breakdown_for_month(self, employee, ref_date=None):
