@@ -17,6 +17,13 @@
 ## 2. Mandatory Rules for AI Code Generation
 
 ### A. Core Strategy (Strict Lookup) — most important rule
+- **Standard-first is ALWAYS prio 1.** Before proposing or building any custom model, field, or
+  flag, first find a **standard Odoo model — or a combination of standard models — that already
+  fulfils the goal**, and suggest that solution first. Only fall back to a custom model when no
+  standard combination fits, and say explicitly why the standard options were rejected. Reuse the
+  hierarchy/relations the target model already ships (e.g. `res.partner` `parent_id`/`child_ids` +
+  `type='other'` for physical sub-locations) before inventing a parallel structure. A field-only
+  `_inherit` on a standard model beats a new model (no new ACL, no record-ownership coupling).
 - Before writing **any** model field, XML view, security rule, or data record, **look up the
   matching pattern in the core source** (`odoo/addons/`, `addons/`, `addons_ee/`) **for this exact
   version**. Field names, framework methods, view structure, and the XML data-eval context change
@@ -70,7 +77,7 @@
   - full business app (models + views + security + data): `igm_fsm/`, `igm_task_forecast/`
   - OWL/JS frontend or PWA-style app (`static/src`, assets bundle): `igm_fsm_app/`,
     `igm_objektleiter_app/`
-  - JSON/REST controllers for an external client: `igm_api_fsm/controllers/`
+  - JSON/REST controllers for an external client: `igm_fsm_api/controllers/`
   - dashboard / employee-facing views: `igm_employee_dashboard/`
   - report / layout customization: `igm_footer/report/`
   - seed data + payroll-style config: `igm_de_minijob_payroll/data/`

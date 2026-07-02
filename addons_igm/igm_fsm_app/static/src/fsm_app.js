@@ -50,7 +50,7 @@ export class FsmApp extends Component {
         this.state.loading = true;
         this.state.error = null;
         try {
-            const tasks = await this.orm.call("project.task", "igm_api_fsm_get_my_tasks", []);
+            const tasks = await this.orm.call("project.task", "igm_fsm_api_get_my_tasks", []);
             const task = tasks[0] || null;
             this.state.task = task;
             if (task) {
@@ -140,7 +140,7 @@ export class FsmApp extends Component {
         reader.onload = async () => {
             const dataUrl = String(reader.result);
             try {
-                const attId = await this.orm.call("project.task", "igm_api_fsm_add_photo", [[this.state.task.id], dataUrl]);
+                const attId = await this.orm.call("project.task", "igm_fsm_api_add_photo", [[this.state.task.id], dataUrl]);
                 if (attId) {
                     this.state.task.photos.push(attId);
                     this.state.task.photoCount = this.state.task.photos.length;
@@ -159,7 +159,7 @@ export class FsmApp extends Component {
             const kwargs = this.state.overridden
                 ? { worked_hours: this.loggedHours, reason: this.state.reason }
                 : {};
-            await this.orm.call("project.task", "igm_api_fsm_mark_done", [[this.state.task.id]], kwargs);
+            await this.orm.call("project.task", "igm_fsm_api_mark_done", [[this.state.task.id]], kwargs);
             this.state.confirmOpen = false;
             this.state.completed = true;
             this.state.done = true;

@@ -1,8 +1,8 @@
 from odoo import fields, models
 
 
-class IgmApiFsmRequest(models.Model):
-    _name = 'igm.api.fsm.request'
+class IgmFsmApiRequest(models.Model):
+    _name = 'igm.fsm.api.request'
     _description = 'IGM FSM API Idempotency Record'
     _rec_name = 'igm_key'
 

@@ -9,7 +9,7 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     @api.model
-    def igm_api_fsm_get_my_tasks(self):
+    def igm_fsm_api_get_my_tasks(self):
         tasks = self.search(
             [
                 ('user_ids', 'in', self.env.uid),
@@ -18,9 +18,9 @@ class ProjectTask(models.Model):
             ],
             order='planned_date_begin asc, id asc',
         )
-        return tasks.igm_api_fsm_read()
+        return tasks.igm_fsm_api_read()
 
-    def igm_api_fsm_read(self):
+    def igm_fsm_api_read(self):
         result = []
         for task in self:
             partner = task.partner_id
@@ -37,20 +37,20 @@ class ProjectTask(models.Model):
                 'status': status,
                 'customer': {
                     'name': partner.name or '',
-                    'address': task._igm_api_fsm_address(),
+                    'address': task._igm_fsm_api_address(),
                     'phone': partner.phone or partner.mobile or None,
                 },
-                'contact': task._igm_api_fsm_contact(),
+                'contact': task._igm_fsm_api_contact(),
                 'plannedStart': task.planned_date_begin.isoformat() if task.planned_date_begin else None,
                 'plannedEnd': task.date_deadline.isoformat() if task.date_deadline else None,
                 'allocatedHours': task.allocated_hours or 0.0,
-                'note': task._igm_api_fsm_note(),
-                'photos': task._igm_api_fsm_photo_ids(),
-                'photoCount': task._igm_api_fsm_photo_count(),
+                'note': task._igm_fsm_api_note(),
+                'photos': task._igm_fsm_api_photo_ids(),
+                'photoCount': task._igm_fsm_api_photo_count(),
             })
         return result
 
-    def _igm_api_fsm_address(self):
+    def _igm_fsm_api_address(self):
         self.ensure_one()
         partner = self.partner_id
         parts = [
@@ -60,7 +60,7 @@ class ProjectTask(models.Model):
         ]
         return ', '.join(p.strip() for p in parts if p and p.strip())
 
-    def _igm_api_fsm_contact(self):
+    def _igm_fsm_api_contact(self):
         self.ensure_one()
         partner = self.partner_id
         if not partner:
@@ -77,18 +77,18 @@ class ProjectTask(models.Model):
             'email': contact.email or partner.email or None,
         }
 
-    def _igm_api_fsm_note(self):
+    def _igm_fsm_api_note(self):
         self.ensure_one()
         if not self.description:
             return None
         text = html2plaintext(self.description).strip()
         return text or None
 
-    def _igm_api_fsm_photo_count(self):
+    def _igm_fsm_api_photo_count(self):
         self.ensure_one()
-        return len(self._igm_api_fsm_photo_ids())
+        return len(self._igm_fsm_api_photo_ids())
 
-    def _igm_api_fsm_photo_ids(self):
+    def _igm_fsm_api_photo_ids(self):
         self.ensure_one()
         return self.env['ir.attachment'].search([
             ('res_model', '=', 'project.task'),
@@ -96,10 +96,10 @@ class ProjectTask(models.Model):
             ('mimetype', '=like', 'image/%'),
         ], order='id').ids
 
-    def igm_api_fsm_mark_done(self, worked_hours=None, reason=None):
+    def igm_fsm_api_mark_done(self, worked_hours=None, reason=None):
         self.ensure_one()
         if worked_hours is not None and reason:
-            self._igm_api_fsm_log_time_reason(worked_hours, reason)
+            self._igm_fsm_api_log_time_reason(worked_hours, reason)
         if worked_hours is None:
             self.action_igm_cleaner_done()
             return True
@@ -116,7 +116,7 @@ class ProjectTask(models.Model):
         self.action_fsm_validate(stop_running_timers=True)
         return True
 
-    def igm_api_fsm_add_photo(self, image_base64, note=None):
+    def igm_fsm_api_add_photo(self, image_base64, note=None):
         self.ensure_one()
         image_data = (image_base64 or '').split(',')[-1]
         raw = base64.b64decode(image_data)
@@ -129,7 +129,7 @@ class ProjectTask(models.Model):
         attachment = message.attachment_ids[:1]
         return attachment.id if attachment else False
 
-    def _igm_api_fsm_supervisor_partner(self):
+    def _igm_fsm_api_supervisor_partner(self):
         self.ensure_one()
         employee = self.env.user.employee_id
         if employee and employee.parent_id and employee.parent_id.user_id:
@@ -137,9 +137,9 @@ class ProjectTask(models.Model):
         admin = self.env.ref('base.user_admin', raise_if_not_found=False)
         return admin.partner_id if admin else self.env['res.partner']
 
-    def _igm_api_fsm_log_time_reason(self, worked_hours, reason):
+    def _igm_fsm_api_log_time_reason(self, worked_hours, reason):
         self.ensure_one()
-        supervisor = self._igm_api_fsm_supervisor_partner()
+        supervisor = self._igm_fsm_api_supervisor_partner()
         hours = int(worked_hours)
         minutes = int(round((worked_hours - hours) * 60))
         body = _(

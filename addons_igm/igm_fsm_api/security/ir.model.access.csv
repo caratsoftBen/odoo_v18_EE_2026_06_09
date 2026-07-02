@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_igm_fsm_api_request_manager,igm.fsm.api.request.manager,model_igm_fsm_api_request,industry_fsm.group_fsm_manager,1,1,1,1
+access_igm_fsm_api_request_user,igm.fsm.api.request.user,model_igm_fsm_api_request,industry_fsm.group_fsm_user,1,0,0,0
